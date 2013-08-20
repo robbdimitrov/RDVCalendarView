@@ -14,9 +14,22 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        _titleLabel = [[UILabel alloc] init];
+        [_titleLabel setTextColor:[UIColor blackColor]];
+        [_titleLabel setBackgroundColor:[UIColor clearColor]];
+        [_titleLabel setFont:[UIFont systemFontOfSize:20]];
+        [self addSubview:_titleLabel];
     }
     return self;
+}
+
+- (void)layoutSubviews {
+    CGSize frameSize = self.frame.size;
+    CGSize titleSize = [[self titleLabel] sizeThatFits:CGSizeMake(frameSize.width, frameSize.height)];
+    
+    [[self titleLabel] setFrame:CGRectMake(roundf(frameSize.width / 2 - titleSize.width / 2),
+                                           roundf(frameSize.height / 2 - titleSize.height / 2),
+                                           titleSize.width, titleSize.height)];
 }
 
 @end

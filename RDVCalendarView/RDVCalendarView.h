@@ -14,6 +14,11 @@
 @property (nonatomic) UIButton *previousMonthButton;
 @property (nonatomic) UIButton *nextMonthButton;
 
+@property UIColor *dayBorderColor;
+@property UIColor *dayBackgroundColor;
+@property UIColor *selectedDayBackgroundColor;
+@property UIColor *currentDayBackgroundColor;
+
 - (void)reloadData;
 
 @end

@@ -10,4 +10,6 @@
 
 @interface RDVCalendarDayView : UIView
 
+@property (nonatomic, readonly) UILabel *titleLabel;
+
 @end
