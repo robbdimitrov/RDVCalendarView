@@ -11,5 +11,8 @@
 @interface RDVCalendarDayView : UIView
 
 @property (nonatomic, readonly) UILabel *titleLabel;
+@property (nonatomic) UIView *contentView;
+@property (nonatomic) UIView *backgroundView;
+@property (nonatomic) UIView *selectedBackgroundView;
 
 @end

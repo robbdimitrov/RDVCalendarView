@@ -8,17 +8,25 @@
 
 #import <UIKit/UIKit.h>
 
+@class RDVCalendarHeaderView;
+
+@protocol RDVCalendarViewDelegate;
+
 @interface RDVCalendarView : UIView
 
-@property (nonatomic) UILabel *titleView;
-@property (nonatomic) UIButton *previousMonthButton;
-@property (nonatomic) UIButton *nextMonthButton;
+@property (weak) id <RDVCalendarViewDelegate> delegate;
+@property (nonatomic) RDVCalendarHeaderView *headerView;
+@property (nonatomic) UIColor *separatorColor;
 
-@property UIColor *dayBorderColor;
-@property UIColor *dayBackgroundColor;
-@property UIColor *selectedDayBackgroundColor;
-@property UIColor *currentDayBackgroundColor;
+@property NSDate *selectedDate;
 
 - (void)reloadData;
 
+@end
+
+@protocol RDVCalendarViewDelegate <NSObject>
+@optional
+- (BOOL)calendarView:(RDVCalendarView *)calendarView shouldSelectDate:(NSDate *)date;
+- (void)calendarView:(RDVCalendarView *)calendarView willSelectDate:(NSDate *)date;
+- (void)calendarView:(RDVCalendarView *)calendarView didSelectDate:(NSDate *)date;
 @end

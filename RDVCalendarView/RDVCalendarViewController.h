@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RDVCalendarView.h"
 
-@class RDVCalendarView;
-
-@interface RDVCalendarViewController : UIViewController
+@interface RDVCalendarViewController : UIViewController <RDVCalendarViewDelegate>
 
 @property (nonatomic) RDVCalendarView *calendarView;
 

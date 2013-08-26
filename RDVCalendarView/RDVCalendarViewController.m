@@ -7,11 +7,6 @@
 //
 
 #import "RDVCalendarViewController.h"
-#import "RDVCalendarView.h"
-
-@interface RDVCalendarViewController ()
-
-@end
 
 @implementation RDVCalendarViewController
 
@@ -32,14 +27,13 @@
     _calendarView = [[RDVCalendarView alloc] initWithFrame:applicationFrame];
     [_calendarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
     [_calendarView setBackgroundColor:[UIColor whiteColor]];
+    [_calendarView setDelegate:self];
     self.view = _calendarView;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[self.calendarView titleView] setText:@"August"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -53,6 +47,20 @@
         return YES;
     }
     return toInterfaceOrientation == UIInterfaceOrientationPortrait;
+}
+
+#pragma mark - RDVCalendarViewDelegate
+
+- (BOOL)calendarView:(RDVCalendarView *)calendarView shouldSelectDate:(NSDate *)date {
+    return YES;
+}
+
+- (void)calendarView:(RDVCalendarView *)calendarView willSelectDate:(NSDate *)date {
+    
+}
+
+- (void)calendarView:(RDVCalendarView *)calendarView didSelectDate:(NSDate *)date {
+    
 }
 
 @end
