@@ -7,14 +7,14 @@
 //
 
 #import "RDVCalendarView.h"
-#import "RDVCalendarDayView.h"
-#import "RDVCalendarWeekDaysView.h"
+#import "RDVCalendarDayCell.h"
+#import "RDVCalendarWeekDaysHeader.h"
 #import "RDVCalendarHeaderView.h"
 #import "RDVCalendarMonthView.h"
 
-@interface RDVCalendarView ()
+@interface RDVCalendarView () <RDVCalendarMonthViewDelegate>
 
-@property (nonatomic) RDVCalendarWeekDaysView *weekDaysView;
+@property (nonatomic) RDVCalendarWeekDaysHeader *weekDaysView;
 @property (nonatomic) RDVCalendarMonthView *monthView;
 @property NSCalendar *calendar;
 
@@ -29,19 +29,20 @@
         _calendar = [NSCalendar autoupdatingCurrentCalendar];
         _selectedDate = [NSDate date];
         
-        NSLog(@"calendar.firstWeekday = %d", _calendar.firstWeekday);
-        NSLog(@"caledar.minimumDaysInFirstWeek = %d", _calendar.minimumDaysInFirstWeek);
-        
         _headerView = [[RDVCalendarHeaderView alloc] init];
         [[_headerView titleLabel] setText:@"August"];
         [self addSubview:_headerView];
         
-        _weekDaysView = [[RDVCalendarWeekDaysView alloc] init];
-        [_weekDaysView setWeekDays:@[@"SUN", @"MON", @"TUE", @"WED", @"THU", @"FRI", @"SAT"]];
+        _weekDaysView = [[RDVCalendarWeekDaysHeader alloc] init];
         [self addSubview:_weekDaysView];
         
         _monthView = [[RDVCalendarMonthView alloc] init];
         [self addSubview:_monthView];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(currentLocaleDidChange:)
+                                                     name:NSCurrentLocaleDidChangeNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -70,6 +71,32 @@
 
 - (void)reloadData {
     
+}
+
+#pragma mark - RDVCalendarMonthViewDelegate
+
+- (RDVCalendarDayCell *)calendarMonthView:(RDVCalendarMonthView *)calendarMonthView dayForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *DayIdentifier = @"Day";
+    
+    RDVCalendarDayCell *dayCell = [calendarMonthView dequeueReusableCellWithIdentifier:DayIdentifier];
+    if (!dayCell) {
+        dayCell = [[RDVCalendarDayCell alloc] initWithStyle:RDVCalendarDayCellSelectionStyleNormal reuseIdentifier:DayIdentifier];
+        [dayCell.titleLabel setText:[NSString stringWithFormat:@"%d", indexPath.row + indexPath.section]];
+    }
+    
+    return dayCell;
+}
+
+- (void)calendarMonthView:(RDVCalendarMonthView *)calendarMonthView didSelectIndexPath:(NSIndexPath *)indexPath {
+    
+}
+
+- (NSInteger)numberOfWeeksInCalendarMonthView:(RDVCalendarMonthView *)calendarMonthView {
+    return 0;
+}
+
+- (void)currentLocaleDidChange:(NSNotification *)notification {
+    [[self weekDaysView] setupWeekDays];
 }
 
 @end

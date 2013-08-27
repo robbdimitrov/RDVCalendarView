@@ -1,14 +1,14 @@
 //
-//  RDVCalendarWeekDaysView.m
+//  RDVCalendarWeekDaysHeader.m
 //  RDVCalendarView
 //
 //  Created by Robert Dimitrov on 8/26/13.
 //  Copyright (c) 2013 Robert Dimitrov. All rights reserved.
 //
 
-#import "RDVCalendarWeekDaysView.h"
+#import "RDVCalendarWeekDaysHeader.h"
 
-@implementation RDVCalendarWeekDaysView
+@implementation RDVCalendarWeekDaysHeader
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -16,9 +16,9 @@
     if (self) {
         [self setBackgroundColor:[UIColor whiteColor]];
         
-        _weekDays = @[@"SUN", @"MON", @"TUE", @"WED", @"THU", @"FRI", @"SAT"];
+        [self setupWeekDays];
         
-        _weekDayAttributes = @{UITextAttributeFont: [UIFont systemFontOfSize:18],
+        _weekDayAttributes = @{UITextAttributeFont: [UIFont systemFontOfSize:14],
                                UITextAttributeTextColor: [UIColor grayColor],
                                UITextAttributeTextShadowColor: [UIColor clearColor],
                                UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetZero],
@@ -56,6 +56,33 @@
     }
     
     CGContextRestoreGState(context);
+}
+
+- (void)setupWeekDays {
+    NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
+    NSInteger firstWeekDay = [calendar firstWeekday] - 1;
+    
+    // We need an NSDateFormatter to have access to the localized weekday strings
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    
+    NSArray *weekSymbols = [formatter shortWeekdaySymbols];
+    
+    // weekdaySymbols returns and array of strings. Keep in mind that they start from Sunday
+    // 0 - Sunday, 1 - Monday, 2 - Tuesday ...
+    NSMutableArray *weekDays = [[NSMutableArray alloc] initWithCapacity:[weekSymbols count]];
+    for (NSInteger day = firstWeekDay; day < [weekSymbols count]; day++) {
+        [weekDays addObject:[weekSymbols objectAtIndex:day]];
+    }
+    
+    if (firstWeekDay != 0) {
+        for (NSInteger day = 0; day < firstWeekDay; day++) {
+            [weekDays addObject:[weekSymbols objectAtIndex:day]];
+        }
+    }
+    
+    _weekDays = [NSArray arrayWithArray:weekDays];
+    
+    [self setNeedsDisplay];
 }
 
 @end

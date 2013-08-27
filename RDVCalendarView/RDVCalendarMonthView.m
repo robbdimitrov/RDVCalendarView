@@ -7,12 +7,14 @@
 //
 
 #import "RDVCalendarMonthView.h"
-#import "RDVCalendarDayView.h"
-#import <QuartzCore/QuartzCore.h>
+#import "RDVCalendarDayCell.h"
 
-@interface RDVCalendarMonthView ()
+@interface RDVCalendarMonthView () {
+    
+}
 
 @property (nonatomic) NSArray *dayViews;
+@property (nonatomic) RDVCalendarDayCell *selectedDayCell;
 
 @end
 
@@ -25,13 +27,11 @@
         NSMutableArray *dayViews = [[NSMutableArray alloc] initWithCapacity:30];
         
         for (NSInteger i = 0; i < 30; i++) {
-            RDVCalendarDayView *dayView = [[RDVCalendarDayView alloc] init];
-            [dayView.titleLabel setText:[NSString stringWithFormat:@"%d", i + 1]];
-            [dayView.layer setBorderColor:[UIColor lightGrayColor].CGColor];
-            [dayView setBackgroundColor:[UIColor whiteColor]];
-            [dayView.layer setBorderWidth:2.0];
-            [self addSubview:dayView];
-            [dayViews addObject:dayView];
+            RDVCalendarDayCell *dayCell = [[RDVCalendarDayCell alloc] init];
+            [dayCell.titleLabel setText:[NSString stringWithFormat:@"%d", i + 1]];
+            [dayCell setBackgroundColor:[UIColor whiteColor]];
+            [self addSubview:dayCell];
+            [dayViews addObject:dayCell];
         }
         
         _dayViews = [[NSArray alloc] initWithArray:dayViews];
@@ -56,6 +56,60 @@
             column++;
         }
     }
+}
+
+- (id)dequeueReusableCellWithIdentifier:(NSString *)identifier {
+    return nil;
+}
+
+- (NSIndexPath *)indexPathForCell:(UITableViewCell *)cell {
+    return nil;
+}
+
+- (NSIndexPath *)indexPathForRowAtPoint:(CGPoint)point {
+    return nil;
+}
+
+- (RDVCalendarDayCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return nil;
+}
+
+- (NSIndexPath *)indexPathForSelectedCell {
+    return nil;
+}
+
+- (RDVCalendarDayCell *)viewAtLocation:(CGPoint)location {
+    RDVCalendarDayCell *view = nil;
+    
+    for (RDVCalendarDayCell *dayView in [self dayViews]) {
+        if (CGRectContainsPoint(dayView.frame, location)) {
+            view = dayView;
+        }
+    }
+    
+    return view;
+}
+
+#pragma mark - Touch handling
+
+- (void)handleTouches:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = [[event allTouches] anyObject];
+    
+    RDVCalendarDayCell *selectedCell = [self viewAtLocation:[touch locationInView:self]];
+    
+    if (selectedCell && selectedCell != [self selectedDayCell]) {
+        [[self selectedDayCell] setSelected:NO];
+        [self setSelectedDayCell:selectedCell];
+        [[self selectedDayCell] setSelected:YES];
+    }
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self handleTouches:touches withEvent:event];
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self handleTouches:touches withEvent:event];
 }
 
 @end

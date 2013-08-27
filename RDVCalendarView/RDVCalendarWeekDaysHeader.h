@@ -1,5 +1,5 @@
 //
-//  RDVCalendarWeekDaysView.h
+//  RDVCalendarWeekDaysHeader.h
 //  RDVCalendarView
 //
 //  Created by Robert Dimitrov on 8/26/13.
@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RDVCalendarWeekDaysView : UIView
+@interface RDVCalendarWeekDaysHeader : UIView
 
 @property (nonatomic) NSArray *weekDays;
 @property (nonatomic) NSDictionary *weekDayAttributes;
+
+- (void)setupWeekDays;
 
 @end

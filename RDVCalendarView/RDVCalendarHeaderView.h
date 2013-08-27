@@ -11,7 +11,7 @@
 @interface RDVCalendarHeaderView : UIView
 
 @property (nonatomic) UILabel *titleLabel;
-@property (nonatomic) UIButton *previousMonthButton;
-@property (nonatomic) UIButton *nextMonthButton;
+@property (nonatomic) UIButton *backButton;
+@property (nonatomic) UIButton *forwardButton;
 
 @end

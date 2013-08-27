@@ -14,14 +14,14 @@
 		62C2389317CB463C009B4090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C2388A17CB463C009B4090 /* main.m */; };
 		62C2389A17CB472B009B4090 /* RDVAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C2389917CB472B009B4090 /* RDVAppDelegate.m */; };
 		62C2389D17CB4765009B4090 /* RDVCalendarHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C2389C17CB4765009B4090 /* RDVCalendarHeaderView.m */; };
-		62C238A117CB4E97009B4090 /* RDVCalendarWeekDaysView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C238A017CB4E97009B4090 /* RDVCalendarWeekDaysView.m */; };
+		62C238A117CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C238A017CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m */; };
 		62C238A417CB6814009B4090 /* RDVCalendarMonthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C238A317CB6814009B4090 /* RDVCalendarMonthView.m */; };
 		62F77D3617BE0080009873CE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F77D3517BE0080009873CE /* UIKit.framework */; };
 		62F77D3817BE0080009873CE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F77D3717BE0080009873CE /* Foundation.framework */; };
 		62F77D3A17BE0080009873CE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F77D3917BE0080009873CE /* CoreGraphics.framework */; };
 		62F77D5417BE00A7009873CE /* RDVCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F77D5317BE00A7009873CE /* RDVCalendarViewController.m */; };
 		62F77D5717BE00BB009873CE /* RDVCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F77D5617BE00BB009873CE /* RDVCalendarView.m */; };
-		62F77D5A17BE0105009873CE /* RDVCalendarDayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F77D5917BE0105009873CE /* RDVCalendarDayView.m */; };
+		62F77D5A17BE0105009873CE /* RDVCalendarDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F77D5917BE0105009873CE /* RDVCalendarDayCell.m */; };
 		B44421A817BE61A300A048A6 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = B44421A617BE61A300A048A6 /* LICENSE */; };
 		B44421A917BE61A300A048A6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B44421A717BE61A300A048A6 /* README.md */; };
 /* End PBXBuildFile section */
@@ -38,8 +38,8 @@
 		62C2389917CB472B009B4090 /* RDVAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVAppDelegate.m; sourceTree = "<group>"; };
 		62C2389B17CB4765009B4090 /* RDVCalendarHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVCalendarHeaderView.h; sourceTree = "<group>"; };
 		62C2389C17CB4765009B4090 /* RDVCalendarHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarHeaderView.m; sourceTree = "<group>"; };
-		62C2389F17CB4E97009B4090 /* RDVCalendarWeekDaysView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVCalendarWeekDaysView.h; sourceTree = "<group>"; };
-		62C238A017CB4E97009B4090 /* RDVCalendarWeekDaysView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarWeekDaysView.m; sourceTree = "<group>"; };
+		62C2389F17CB4E97009B4090 /* RDVCalendarWeekDaysHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVCalendarWeekDaysHeader.h; sourceTree = "<group>"; };
+		62C238A017CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarWeekDaysHeader.m; sourceTree = "<group>"; };
 		62C238A217CB6813009B4090 /* RDVCalendarMonthView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVCalendarMonthView.h; sourceTree = "<group>"; };
 		62C238A317CB6814009B4090 /* RDVCalendarMonthView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarMonthView.m; sourceTree = "<group>"; };
 		62F77D3217BE0080009873CE /* RDVCalendarView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RDVCalendarView.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,8 +50,8 @@
 		62F77D5317BE00A7009873CE /* RDVCalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarViewController.m; sourceTree = "<group>"; };
 		62F77D5517BE00BB009873CE /* RDVCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVCalendarView.h; sourceTree = "<group>"; };
 		62F77D5617BE00BB009873CE /* RDVCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarView.m; sourceTree = "<group>"; };
-		62F77D5817BE0105009873CE /* RDVCalendarDayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVCalendarDayView.h; sourceTree = "<group>"; };
-		62F77D5917BE0105009873CE /* RDVCalendarDayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarDayView.m; sourceTree = "<group>"; };
+		62F77D5817BE0105009873CE /* RDVCalendarDayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVCalendarDayCell.h; sourceTree = "<group>"; };
+		62F77D5917BE0105009873CE /* RDVCalendarDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarDayCell.m; sourceTree = "<group>"; };
 		B44421A617BE61A300A048A6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B44421A717BE61A300A048A6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -139,12 +139,12 @@
 				62F77D5317BE00A7009873CE /* RDVCalendarViewController.m */,
 				62F77D5517BE00BB009873CE /* RDVCalendarView.h */,
 				62F77D5617BE00BB009873CE /* RDVCalendarView.m */,
-				62F77D5817BE0105009873CE /* RDVCalendarDayView.h */,
-				62F77D5917BE0105009873CE /* RDVCalendarDayView.m */,
+				62F77D5817BE0105009873CE /* RDVCalendarDayCell.h */,
+				62F77D5917BE0105009873CE /* RDVCalendarDayCell.m */,
 				62C2389B17CB4765009B4090 /* RDVCalendarHeaderView.h */,
 				62C2389C17CB4765009B4090 /* RDVCalendarHeaderView.m */,
-				62C2389F17CB4E97009B4090 /* RDVCalendarWeekDaysView.h */,
-				62C238A017CB4E97009B4090 /* RDVCalendarWeekDaysView.m */,
+				62C2389F17CB4E97009B4090 /* RDVCalendarWeekDaysHeader.h */,
+				62C238A017CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m */,
 				62C238A217CB6813009B4090 /* RDVCalendarMonthView.h */,
 				62C238A317CB6814009B4090 /* RDVCalendarMonthView.m */,
 			);
@@ -221,11 +221,11 @@
 			files = (
 				62F77D5417BE00A7009873CE /* RDVCalendarViewController.m in Sources */,
 				62F77D5717BE00BB009873CE /* RDVCalendarView.m in Sources */,
-				62F77D5A17BE0105009873CE /* RDVCalendarDayView.m in Sources */,
+				62F77D5A17BE0105009873CE /* RDVCalendarDayCell.m in Sources */,
 				62C2389317CB463C009B4090 /* main.m in Sources */,
 				62C2389A17CB472B009B4090 /* RDVAppDelegate.m in Sources */,
 				62C2389D17CB4765009B4090 /* RDVCalendarHeaderView.m in Sources */,
-				62C238A117CB4E97009B4090 /* RDVCalendarWeekDaysView.m in Sources */,
+				62C238A117CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m in Sources */,
 				62C238A417CB6814009B4090 /* RDVCalendarMonthView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
