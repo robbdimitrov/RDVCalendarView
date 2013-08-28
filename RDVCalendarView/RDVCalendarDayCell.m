@@ -85,7 +85,11 @@
 }
 
 - (void)prepareForReuse {
+    if ([self isSelected]) {
+        [self setSelected:NO animated:NO];
+    }
     
+    [[self titleLabel] setText:@""];
 }
 
 @end

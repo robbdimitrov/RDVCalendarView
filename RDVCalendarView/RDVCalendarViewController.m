@@ -34,6 +34,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[self calendarView] reloadData];
 }
 
 - (void)didReceiveMemoryWarning

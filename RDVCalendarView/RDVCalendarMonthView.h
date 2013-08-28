@@ -14,25 +14,27 @@
 @interface RDVCalendarMonthView : UIView
 
 @property (weak) id <RDVCalendarMonthViewDelegate> delegate;
-@property (nonatomic) NSIndexPath *selectedIndexPath;
+@property (nonatomic) NSInteger selectedIndex;
 
 - (id)dequeueReusableCellWithIdentifier:(NSString *)identifier;
 
-- (NSIndexPath *)indexPathForCell:(UITableViewCell *)cell;
-- (NSIndexPath *)indexPathForRowAtPoint:(CGPoint)point;
-- (RDVCalendarDayCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
-- (NSIndexPath *)indexPathForSelectedCell;
+- (NSInteger)indexForCell:(UITableViewCell *)cell;
+- (NSInteger)indexForRowAtPoint:(CGPoint)point;
+- (RDVCalendarDayCell *)cellForRowAtIndex:(NSInteger)index;
+- (NSInteger)indexForSelectedCell;
+
+- (void)reloadData;
 
 @end
 
 @protocol RDVCalendarMonthViewDelegate <NSObject>
+- (NSInteger)numberOfWeeksInCalendarMonthView:(RDVCalendarMonthView *)calendarMonthView;
+- (NSInteger)numberOfDaysInCalendarMonthView:(RDVCalendarMonthView *)calendarMonthView;
+- (NSInteger)numberOfDaysInFirstWeek:(RDVCalendarMonthView *)calendarMonthView;
+- (RDVCalendarDayCell *)calendarMonthView:(RDVCalendarMonthView *)calendarMonthView dayCellForIndex:(NSInteger)index;
 
 @optional
-- (BOOL)calendarMonthView:(RDVCalendarMonthView *)calendarMonthView shouldSelectDayCellAtIndexPath:(NSIndexPath *)indexPath;
-- (void)calendarMonthView:(RDVCalendarMonthView *)calendarMonthView willSelectDayCellAtIndexPath:(NSIndexPath *)indexPath;
-- (void)calendarMonthView:(RDVCalendarMonthView *)calendarMonthView didSelectDayCellAtIndexPath:(NSIndexPath *)indexPath;
-
-- (NSInteger)numberOfWeeksInCalendarMonthView:(RDVCalendarMonthView *)calendarMonthView;
-- (RDVCalendarDayCell *)calendarMonthView:(RDVCalendarMonthView *)calendarMonthView dayCellForIndexPath:(NSIndexPath *)indexPath;
-
+- (BOOL)calendarMonthView:(RDVCalendarMonthView *)calendarMonthView shouldSelectDayCellAtIndex:(NSInteger)index;
+- (void)calendarMonthView:(RDVCalendarMonthView *)calendarMonthView willSelectDayCellAtIndex:(NSInteger)index;
+- (void)calendarMonthView:(RDVCalendarMonthView *)calendarMonthView didSelectDayCellAtIndex:(NSInteger)index;
 @end

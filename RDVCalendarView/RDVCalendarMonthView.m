@@ -13,8 +13,15 @@
     
 }
 
-@property (nonatomic) NSArray *dayViews;
+@property (nonatomic) NSMutableArray *visibleCells;
+@property (nonatomic) NSMutableArray *dayCells;
+
 @property (nonatomic) RDVCalendarDayCell *selectedDayCell;
+
+@property (nonatomic) NSInteger numberOfDays;
+@property (nonatomic) NSInteger numberOfWeeks;
+
+@property (nonatomic) NSInteger firstWeekDays;
 
 @end
 
@@ -24,17 +31,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        NSMutableArray *dayViews = [[NSMutableArray alloc] initWithCapacity:30];
-        
-        for (NSInteger i = 0; i < 30; i++) {
-            RDVCalendarDayCell *dayCell = [[RDVCalendarDayCell alloc] init];
-            [dayCell.titleLabel setText:[NSString stringWithFormat:@"%d", i + 1]];
-            [dayCell setBackgroundColor:[UIColor whiteColor]];
-            [self addSubview:dayCell];
-            [dayViews addObject:dayCell];
-        }
-        
-        _dayViews = [[NSArray alloc] initWithArray:dayViews];
+        _dayCells = [[NSMutableArray alloc] init];
+        _visibleCells = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -42,12 +40,27 @@
 - (void)layoutSubviews {
     CGSize viewSize = self.frame.size;
     
-    NSInteger column = 0;
+    NSInteger column = 7 - [self firstWeekDays];
     CGFloat dayWidth = roundf(viewSize.width / 7);
     NSInteger row = 0;
     
-    for (UIView *dayView in [self dayViews]) {
-        [dayView setFrame:CGRectMake(column * dayWidth, row * dayWidth, dayWidth, dayWidth)];
+    for (NSInteger i = 0; i < [self numberOfDays]; i++) {
+        RDVCalendarDayCell *dayCell = nil;
+        
+        if ([[self delegate] respondsToSelector:@selector(calendarMonthView:dayCellForIndex:)]) {
+            dayCell = [[self delegate] calendarMonthView:self dayCellForIndex:i];
+            if (![[self visibleCells] containsObject:dayCell]) {
+                [[self visibleCells] addObject:dayCell];
+                [self addSubview:dayCell];
+            }
+        }
+        
+        [dayCell setFrame:CGRectMake(column * dayWidth, row * dayWidth, dayWidth, dayWidth)];
+        [dayCell setBackgroundColor:[UIColor whiteColor]];
+        
+        if ([dayCell superview] != self) {
+            [self addSubview:dayCell];
+        }
         
         if (column == 6) {
             column = 0;
@@ -58,30 +71,61 @@
     }
 }
 
+- (void)reloadData {
+    if ([[self delegate] respondsToSelector:@selector(numberOfWeeksInCalendarMonthView:)]) {
+        [self setNumberOfWeeks:[[self delegate] numberOfWeeksInCalendarMonthView:self]];
+    }
+    
+    if ([[self delegate] respondsToSelector:@selector(numberOfDaysInCalendarMonthView:)]) {
+        [self setNumberOfDays:[[self delegate] numberOfDaysInCalendarMonthView:self]];
+    }
+    
+    if ([[self delegate] respondsToSelector:@selector(numberOfDaysInFirstWeek:)]) {
+        [self setFirstWeekDays:[[self delegate] numberOfDaysInFirstWeek:self]];
+    }
+    
+    for (RDVCalendarDayCell *visibleCell in [self visibleCells]) {
+        [visibleCell removeFromSuperview];
+        [visibleCell prepareForReuse];
+        [[self dayCells] addObject:visibleCell];
+    }
+    
+    [[self visibleCells] removeAllObjects];
+    
+    [self setNeedsLayout];
+}
+
 - (id)dequeueReusableCellWithIdentifier:(NSString *)identifier {
+    UIView *dayCell = nil;
+    
+    if ([[self dayCells] count]) {
+        dayCell = [[self dayCells] objectAtIndex:0];
+        [[self dayCells] removeObjectAtIndex:0];
+    }
+    
+    return dayCell;
+}
+
+- (NSInteger)indexForCell:(UITableViewCell *)cell {
+    return 0;
+}
+
+- (NSInteger)indexForRowAtPoint:(CGPoint)point {
+    return 0;
+}
+
+- (RDVCalendarDayCell *)cellForRowAtIndex:(NSInteger)index {
     return nil;
 }
 
-- (NSIndexPath *)indexPathForCell:(UITableViewCell *)cell {
-    return nil;
-}
-
-- (NSIndexPath *)indexPathForRowAtPoint:(CGPoint)point {
-    return nil;
-}
-
-- (RDVCalendarDayCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return nil;
-}
-
-- (NSIndexPath *)indexPathForSelectedCell {
-    return nil;
+- (NSInteger)indexForSelectedCell {
+    return 0;
 }
 
 - (RDVCalendarDayCell *)viewAtLocation:(CGPoint)location {
     RDVCalendarDayCell *view = nil;
     
-    for (RDVCalendarDayCell *dayView in [self dayViews]) {
+    for (RDVCalendarDayCell *dayView in [self visibleCells]) {
         if (CGRectContainsPoint(dayView.frame, location)) {
             view = dayView;
         }

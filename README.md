@@ -4,6 +4,11 @@
 
 Under development
 
+## Roadmap
+
+* Day separator with customizable color
+* Optional display of days belonging to the previous or next month
+
 ## Requirements
 
 * ARC
