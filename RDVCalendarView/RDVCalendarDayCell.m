@@ -63,6 +63,12 @@
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    if (selected == _selected) {
+        return;
+    }
+    
+    _selected = selected;
+    
     void (^block)() = ^{
         if (selected) {
             [[self backgroundView] setAlpha:0];
@@ -71,6 +77,7 @@
             [[self backgroundView] setAlpha:1];
             [[self selectedBackgroundView] setAlpha:0];
         }
+        [[self titleLabel] setHighlighted:selected];
     };
     
     if (animated) {

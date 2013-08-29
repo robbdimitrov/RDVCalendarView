@@ -14,11 +14,12 @@
 @interface RDVCalendarMonthView : UIView
 
 @property (weak) id <RDVCalendarMonthViewDelegate> delegate;
-@property (nonatomic) NSInteger selectedIndex;
+
+@property (nonatomic) RDVCalendarDayCell *selectedDayCell;
 
 - (id)dequeueReusableCellWithIdentifier:(NSString *)identifier;
 
-- (NSInteger)indexForCell:(UITableViewCell *)cell;
+- (NSInteger)indexForCell:(RDVCalendarDayCell *)cell;
 - (NSInteger)indexForRowAtPoint:(CGPoint)point;
 - (RDVCalendarDayCell *)cellForRowAtIndex:(NSInteger)index;
 - (NSInteger)indexForSelectedCell;

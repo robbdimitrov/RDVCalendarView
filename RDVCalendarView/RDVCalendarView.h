@@ -16,7 +16,13 @@
 
 @property (weak) id <RDVCalendarViewDelegate> delegate;
 @property (nonatomic) RDVCalendarHeaderView *headerView;
-@property (nonatomic) UIColor *separatorColor;
+
+@property (nonatomic) UIColor *currentDayColor;
+@property (nonatomic) UIColor *normalDayColor;
+@property (nonatomic) UIColor *selectedDayColor;
+
+@property (nonatomic) UIColor *dayTextColor;
+@property (nonatomic) UIColor *highlightedDayTextColor;
 
 @property NSDate *selectedDate;
 

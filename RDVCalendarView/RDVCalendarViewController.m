@@ -31,13 +31,6 @@
     self.view = _calendarView;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    [[self calendarView] reloadData];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

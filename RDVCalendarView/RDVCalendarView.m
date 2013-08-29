@@ -11,13 +11,16 @@
 #import "RDVCalendarWeekDaysHeader.h"
 #import "RDVCalendarHeaderView.h"
 #import "RDVCalendarMonthView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface RDVCalendarView () <RDVCalendarMonthViewDelegate>
 
 @property (nonatomic) RDVCalendarWeekDaysHeader *weekDaysView;
 @property (nonatomic) RDVCalendarMonthView *monthView;
 
+@property NSDateComponents *selectedDay;
 @property NSDateComponents *month;
+@property NSDateComponents *currentDay;
 @property NSDate *firstDay;
 
 @end
@@ -28,16 +31,27 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _normalDayColor = [UIColor whiteColor];
+        _selectedDayColor = [UIColor grayColor];
+        _currentDayColor = [UIColor lightGrayColor];
+        
+        _dayTextColor = [UIColor blackColor];
+        _highlightedDayTextColor = [UIColor whiteColor];
+        
+        NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
+        
+        _currentDay = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:[NSDate date]];
+        
         _selectedDate = [NSDate date];
         
         [self setupViews];
         
-        _month = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|
-                                                          NSMonthCalendarUnit|
-                                                          NSDayCalendarUnit|
-                                                          NSWeekdayCalendarUnit|
-                                                          NSCalendarCalendarUnit
-                                                 fromDate:_selectedDate];
+        _month = [calendar components:NSYearCalendarUnit|
+                                      NSMonthCalendarUnit|
+                                      NSDayCalendarUnit|
+                                      NSWeekdayCalendarUnit|
+                                      NSCalendarCalendarUnit
+                             fromDate:_selectedDate];
         _month.day = 1;
         [self updateMonthLabelMonth:_month];
         
@@ -62,11 +76,15 @@
     
     [[self weekDaysView] setFrame:CGRectMake(0, CGRectGetMaxY([self headerView].frame), viewSize.width, 30)];
     
-    [[self monthView] setFrame:CGRectMake(0, CGRectGetMaxY([self weekDaysView].frame), viewSize.width, 500)];
+    CGSize monthViewSize = [[self monthView] sizeThatFits:CGSizeMake(viewSize.width, viewSize.height -
+                                                                     CGRectGetMaxY([self weekDaysView].frame))];
+    [[self monthView] setFrame:CGRectMake(0, CGRectGetMaxY([self weekDaysView].frame), monthViewSize.width, monthViewSize.height)];
 }
 
 - (void)setupViews {
     _headerView = [[RDVCalendarHeaderView alloc] init];
+    [[_headerView backButton] addTarget:self action:@selector(previousMonthButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [[_headerView forwardButton] addTarget:self action:@selector(nextMonthButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_headerView];
     
     _weekDaysView = [[RDVCalendarWeekDaysHeader alloc] init];
@@ -78,11 +96,19 @@
 }
 
 - (void)previousMonthButtonTapped:(id)sender {
-    // show previous month
+    NSInteger month = [[self month] month] - 1;
+    [[self month] setMonth:month];
+    
+    [self updateMonthLabelMonth:[self month]];
+    [self updateMonthViewMonth:[self month]];
 }
 
 - (void)nextMonthButtonTapped:(id)sender {
-    // show next month
+    NSInteger month = [[self month] month] + 1;
+    [[self month] setMonth:month];
+    
+    [self updateMonthLabelMonth:[self month]];
+    [self updateMonthViewMonth:[self month]];
 }
 
 - (void)reloadData {
@@ -95,10 +121,13 @@
     
     NSDate *date = [month.calendar dateFromComponents:month];
     self.headerView.titleLabel.text = [formatter stringFromDate:date];
+    
+    [[self headerView] setNeedsLayout];
 }
 
 - (void)updateMonthViewMonth:(NSDateComponents *)month {
     [self setFirstDay:[month.calendar dateFromComponents:month]];
+    [[self monthView] reloadData];
 }
 
 #pragma mark - RDVCalendarMonthViewDelegate
@@ -109,14 +138,41 @@
     RDVCalendarDayCell *dayCell = [calendarMonthView dequeueReusableCellWithIdentifier:DayIdentifier];
     if (!dayCell) {
         dayCell = [[RDVCalendarDayCell alloc] initWithStyle:RDVCalendarDayCellSelectionStyleNormal reuseIdentifier:DayIdentifier];
-        [dayCell.titleLabel setText:[NSString stringWithFormat:@"%d", index + 1]];
+        [[dayCell titleLabel] setTextColor:[self dayTextColor]];
+        [[dayCell titleLabel] setHighlightedTextColor:[self highlightedDayTextColor]];
+    }
+    
+    [dayCell.titleLabel setText:[NSString stringWithFormat:@"%d", index + 1]];
+    
+    if (index + 1 == [self currentDay].day &&
+        [self month].month == [self currentDay].month &&
+        [self month].year == [self currentDay].year) {
+            [[dayCell backgroundView] setBackgroundColor:[self currentDayColor]];
+    } else {
+        [[dayCell backgroundView] setBackgroundColor:[self normalDayColor]];
+    }
+    
+    [[dayCell selectedBackgroundView] setBackgroundColor:[self selectedDayColor]];
+    
+    if ([self selectedDay] && (index + 1 == [self selectedDay].day &&
+        [self month].month == [self selectedDay].month &&
+        [self month].year == [self selectedDay].year)) {
+        
+        [dayCell setSelected:YES animated:NO];
+        [[self monthView] setSelectedDayCell:dayCell];
     }
     
     return dayCell;
 }
 
-- (void)calendarMonthView:(RDVCalendarMonthView *)calendarMonthView didSelectIndex:(NSInteger)index {
+- (void)calendarMonthView:(RDVCalendarMonthView *)calendarMonthView didSelectDayCellAtIndex:(NSInteger)index {
+    if (![self selectedDay]) {
+        [self setSelectedDay:[[NSDateComponents alloc] init]];
+    }
     
+    [[self selectedDay] setMonth:[[self month] month]];
+    [[self selectedDay] setYear:[[self month] year]];
+    [[self selectedDay] setDay:index + 1];
 }
 
 - (NSInteger)numberOfWeeksInCalendarMonthView:(RDVCalendarMonthView *)calendarMonthView {
