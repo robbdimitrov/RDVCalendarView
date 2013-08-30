@@ -42,7 +42,7 @@
         
         _currentDay = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:[NSDate date]];
         
-        _selectedDate = [NSDate date];
+        NSDate *currentDate = [NSDate date];
         
         [self setupViews];
         
@@ -51,7 +51,7 @@
                                       NSDayCalendarUnit|
                                       NSWeekdayCalendarUnit|
                                       NSCalendarCalendarUnit
-                             fromDate:_selectedDate];
+                             fromDate:currentDate];
         _month.day = 1;
         [self updateMonthLabelMonth:_month];
         
@@ -83,8 +83,10 @@
 
 - (void)setupViews {
     _headerView = [[RDVCalendarHeaderView alloc] init];
-    [[_headerView backButton] addTarget:self action:@selector(previousMonthButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-    [[_headerView forwardButton] addTarget:self action:@selector(nextMonthButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [[_headerView backButton] addTarget:self action:@selector(previousMonthButtonTapped:)
+                       forControlEvents:UIControlEventTouchUpInside];
+    [[_headerView forwardButton] addTarget:self action:@selector(nextMonthButtonTapped:)
+                          forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_headerView];
     
     _weekDaysView = [[RDVCalendarWeekDaysHeader alloc] init];
@@ -130,6 +132,42 @@
     [[self monthView] reloadData];
 }
 
+- (void)setSelectedDate:(NSDate *)selectedDate {
+    NSDate *oldDate = [self selectedDate];
+    
+    if (![oldDate isEqualToDate:selectedDate]) {
+        NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
+        
+        if (![self selectedDay]) {
+            [self setSelectedDay:[[NSDateComponents alloc] init]];
+        }
+        
+        NSDateComponents *selectedDateComponents = [calendar components:NSYearCalendarUnit|
+                                                                        NSMonthCalendarUnit|
+                                                                        NSDayCalendarUnit
+                                                               fromDate:selectedDate];
+        
+        [[self selectedDay] setMonth:[selectedDateComponents month]];
+        [[self selectedDay] setYear:[selectedDateComponents year]];
+        [[self selectedDay] setDay:[selectedDateComponents day]];
+        
+        self.month = [calendar components:NSYearCalendarUnit|
+                                          NSMonthCalendarUnit|
+                                          NSDayCalendarUnit|
+                                          NSWeekdayCalendarUnit|
+                                          NSCalendarCalendarUnit
+                                 fromDate:selectedDate];
+        self.month.day = 1;
+        [self updateMonthLabelMonth:self.month];
+        
+        [self updateMonthViewMonth:self.month];
+    }
+}
+
+- (NSDate *)selectedDate {
+    return [[NSCalendar autoupdatingCurrentCalendar] dateFromComponents:[self selectedDay]];
+}
+
 #pragma mark - RDVCalendarMonthViewDelegate
 
 - (RDVCalendarDayCell *)calendarMonthView:(RDVCalendarMonthView *)calendarMonthView dayCellForIndex:(NSInteger)index {
@@ -173,6 +211,10 @@
     [[self selectedDay] setMonth:[[self month] month]];
     [[self selectedDay] setYear:[[self month] year]];
     [[self selectedDay] setDay:index + 1];
+    
+    if ([[self delegate] respondsToSelector:@selector(calendarView:didSelectDate:)]) {
+        [[self delegate] calendarView:self didSelectDate:[self selectedDate]];
+    }
 }
 
 - (NSInteger)numberOfWeeksInCalendarMonthView:(RDVCalendarMonthView *)calendarMonthView {

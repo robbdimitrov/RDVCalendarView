@@ -24,7 +24,7 @@
 @property (nonatomic) UIColor *dayTextColor;
 @property (nonatomic) UIColor *highlightedDayTextColor;
 
-@property NSDate *selectedDate;
+@property (nonatomic) NSDate *selectedDate;
 
 - (void)reloadData;
 
@@ -32,7 +32,5 @@
 
 @protocol RDVCalendarViewDelegate <NSObject>
 @optional
-- (BOOL)calendarView:(RDVCalendarView *)calendarView shouldSelectDate:(NSDate *)date;
-- (void)calendarView:(RDVCalendarView *)calendarView willSelectDate:(NSDate *)date;
 - (void)calendarView:(RDVCalendarView *)calendarView didSelectDate:(NSDate *)date;
 @end

@@ -67,8 +67,7 @@
     
     NSArray *weekSymbols = [formatter shortWeekdaySymbols];
     
-    // weekdaySymbols returns and array of strings. Keep in mind that they start from Sunday
-    // 0 - Sunday, 1 - Monday, 2 - Tuesday ...
+    // weekdaySymbols returns and array of strings
     NSMutableArray *weekDays = [[NSMutableArray alloc] initWithCapacity:[weekSymbols count]];
     for (NSInteger day = firstWeekDay; day < [weekSymbols count]; day++) {
         [weekDays addObject:[weekSymbols objectAtIndex:day]];

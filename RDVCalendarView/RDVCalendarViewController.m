@@ -31,12 +31,6 @@
     self.view = _calendarView;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         return YES;
@@ -46,16 +40,8 @@
 
 #pragma mark - RDVCalendarViewDelegate
 
-- (BOOL)calendarView:(RDVCalendarView *)calendarView shouldSelectDate:(NSDate *)date {
-    return YES;
-}
-
-- (void)calendarView:(RDVCalendarView *)calendarView willSelectDate:(NSDate *)date {
-    
-}
-
 - (void)calendarView:(RDVCalendarView *)calendarView didSelectDate:(NSDate *)date {
-    
+    [self setSelectedDate:date];
 }
 
 @end

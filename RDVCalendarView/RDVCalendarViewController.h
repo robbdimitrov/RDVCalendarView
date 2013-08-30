@@ -12,5 +12,6 @@
 @interface RDVCalendarViewController : UIViewController <RDVCalendarViewDelegate>
 
 @property (nonatomic) RDVCalendarView *calendarView;
+@property (nonatomic) NSDate *selectedDate;
 
 @end

@@ -121,15 +121,21 @@
 }
 
 - (NSInteger)indexForRowAtPoint:(CGPoint)point {
+    RDVCalendarDayCell *cell = [self viewAtLocation:point];
+    
+    if (cell) {
+        return [self indexForCell:cell];
+    }
+    
     return 0;
 }
 
 - (RDVCalendarDayCell *)cellForRowAtIndex:(NSInteger)index {
-    return nil;
+    return [[self visibleCells] objectAtIndex:index];
 }
 
 - (NSInteger)indexForSelectedCell {
-    return 0;
+    return [self indexForCell:[self selectedDayCell]];
 }
 
 - (RDVCalendarDayCell *)viewAtLocation:(CGPoint)location {
