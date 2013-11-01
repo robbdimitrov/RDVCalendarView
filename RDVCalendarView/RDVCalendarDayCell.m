@@ -1,24 +1,43 @@
+// RDVCalendarDayCell.m
+// RDVCalendarView
 //
-//  RDVCalendarDayCell.m
-//  RDVCalendarView
+// Copyright (c) 2013 Robert Dimitrov
 //
-//  Created by Robert Dimitrov on 8/16/13.
-//  Copyright (c) 2013 Robert Dimitrov. All rights reserved.
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 #import "RDVCalendarDayCell.h"
 
 @interface RDVCalendarDayCell() {
     BOOL _selected;
+    BOOL _highlighted;
 }
 
 @end
 
 @implementation RDVCalendarDayCell
 
-- (id)initWithStyle:(RDVCalendarDayCellSelectionStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier {
     self = [super init];
     if (self) {
+        _reuseIdentifier = [reuseIdentifier copy];
+        _selectionStyle = RDVCalendarDayCellSelectionStyleDefault;
+        
         _backgroundView = [[UIView alloc] init];
         [_backgroundView setBackgroundColor:[UIColor whiteColor]];
         [self addSubview:_backgroundView];
@@ -32,31 +51,33 @@
         [_contentView setBackgroundColor:[UIColor clearColor]];
         [self addSubview:_contentView];
         
-        _titleLabel = [[UILabel alloc] init];
-        [_titleLabel setTextColor:[UIColor blackColor]];
-        [_titleLabel setBackgroundColor:[UIColor clearColor]];
-        [_titleLabel setFont:[UIFont systemFontOfSize:20]];
-        [_contentView addSubview:_titleLabel];
+        _textLabel = [[UILabel alloc] init];
+        [_textLabel setTextColor:[UIColor blackColor]];
+        [_textLabel setBackgroundColor:[UIColor clearColor]];
+        [_textLabel setFont:[UIFont systemFontOfSize:20]];
+        [_contentView addSubview:_textLabel];
     }
     return self;
 }
 
 - (id)init {
-    return [self initWithStyle:RDVCalendarDayCellSelectionStyleNormal reuseIdentifier:nil];
+    return [self initWithReuseIdentifier:@""];
 }
 
 - (void)layoutSubviews {
     CGSize frameSize = self.frame.size;
-    CGSize titleSize = [[self titleLabel] sizeThatFits:CGSizeMake(frameSize.width, frameSize.height)];
+    CGSize titleSize = [[self textLabel] sizeThatFits:CGSizeMake(frameSize.width, frameSize.height)];
     
     [[self backgroundView] setFrame:self.bounds];
     [[self selectedBackgroundView] setFrame:self.bounds];
     [[self contentView] setFrame:self.bounds];
     
-    [[self titleLabel] setFrame:CGRectMake(roundf(frameSize.width / 2 - titleSize.width / 2),
+    [[self textLabel] setFrame:CGRectMake(roundf(frameSize.width / 2 - titleSize.width / 2),
                                            roundf(frameSize.height / 2 - titleSize.height / 2),
                                            titleSize.width, titleSize.height)];
 }
+
+#pragma mark - Selection
 
 - (BOOL)isSelected {
     return _selected;
@@ -71,32 +92,71 @@
     
     void (^block)() = ^{
         if (selected) {
-            [[self backgroundView] setAlpha:0];
-            [[self selectedBackgroundView] setAlpha:1];
+            [[self backgroundView] setAlpha:0.0f];
+            [[self selectedBackgroundView] setAlpha:1.0f];
         } else {
-            [[self backgroundView] setAlpha:1];
-            [[self selectedBackgroundView] setAlpha:0];
+            [[self backgroundView] setAlpha:1.0f];
+            [[self selectedBackgroundView] setAlpha:0.0f];
         }
-        [[self titleLabel] setHighlighted:selected];
+        [[self textLabel] setHighlighted:selected];
     };
     
     if (animated) {
-        [UIView animateWithDuration:0.25 animations:block];
+        [UIView animateWithDuration:0.25f animations:block];
     } else {
         block();
     }
 }
 
 - (void)setSelected:(BOOL)selected {
-    [self setSelected:selected animated:YES];
+    [self setSelected:selected animated:NO];
 }
+
+- (BOOL)isHighlighted {
+    return _highlighted;
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    if (highlighted == _highlighted) {
+        return;
+    }
+    
+    _highlighted = highlighted;
+    
+    void (^block)() = ^{
+        if (highlighted) {
+            [[self backgroundView] setAlpha:0.0f];
+            [[self selectedBackgroundView] setAlpha:1.0f];
+        } else {
+            [[self backgroundView] setAlpha:1.0f];
+            [[self selectedBackgroundView] setAlpha:0.0f];
+        }
+        [[self textLabel] setHighlighted:highlighted];
+    };
+    
+    if (animated) {
+        [UIView animateWithDuration:0.25f animations:block];
+    } else {
+        block();
+    }
+}
+
+- (void)setHighlighted:(BOOL)highlighted {
+    [self setHighlighted:highlighted animated:NO];
+}
+
+#pragma mark - Cell reuse
 
 - (void)prepareForReuse {
     if ([self isSelected]) {
-        [self setSelected:NO animated:NO];
+        [self setSelected:NO];
     }
     
-    [[self titleLabel] setText:@""];
+    if ([self isHighlighted]) {
+        [self setHighlighted:NO];
+    }
+    
+    [[self textLabel] setText:@""];
 }
 
 @end

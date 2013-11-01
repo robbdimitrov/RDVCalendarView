@@ -1,4 +1,4 @@
-// RDVCalendarViewController.h
+// RDVExampleViewController.m
 // RDVCalendarView
 //
 // Copyright (c) 2013 Robert Dimitrov
@@ -21,12 +21,27 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <UIKit/UIKit.h>
-#import "RDVCalendarView.h"
+#import "RDVExampleViewController.h"
 
-@interface RDVCalendarViewController : UIViewController <RDVCalendarViewDelegate>
+@interface RDVExampleViewController ()
 
-@property (nonatomic) RDVCalendarView *calendarView;
-@property (nonatomic) BOOL clearsSelectionOnViewWillAppear;
+@end
+
+@implementation RDVExampleViewController
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        self.title = @"Calendar";
+    }
+    return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [[self.navigationController navigationBar] setTranslucent:NO];
+}
 
 @end

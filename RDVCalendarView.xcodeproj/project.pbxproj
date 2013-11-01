@@ -13,7 +13,6 @@
 		62C2389217CB463C009B4090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62C2388817CB463C009B4090 /* InfoPlist.strings */; };
 		62C2389317CB463C009B4090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C2388A17CB463C009B4090 /* main.m */; };
 		62C2389A17CB472B009B4090 /* RDVAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C2389917CB472B009B4090 /* RDVAppDelegate.m */; };
-		62C2389D17CB4765009B4090 /* RDVCalendarHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C2389C17CB4765009B4090 /* RDVCalendarHeaderView.m */; };
 		62C238A117CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C238A017CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m */; };
 		62C238A417CB6814009B4090 /* RDVCalendarMonthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C238A317CB6814009B4090 /* RDVCalendarMonthView.m */; };
 		62F77D3617BE0080009873CE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F77D3517BE0080009873CE /* UIKit.framework */; };
@@ -24,6 +23,7 @@
 		62F77D5A17BE0105009873CE /* RDVCalendarDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F77D5917BE0105009873CE /* RDVCalendarDayCell.m */; };
 		B44421A817BE61A300A048A6 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = B44421A617BE61A300A048A6 /* LICENSE */; };
 		B44421A917BE61A300A048A6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B44421A717BE61A300A048A6 /* README.md */; };
+		B46DECE11823FE5400D4A823 /* RDVExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B46DECE01823FE5400D4A823 /* RDVExampleViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,8 +36,6 @@
 		62C2388E17CB463C009B4090 /* RDVCalendarView-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RDVCalendarView-Prefix.pch"; sourceTree = "<group>"; };
 		62C2389817CB472B009B4090 /* RDVAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVAppDelegate.h; sourceTree = "<group>"; };
 		62C2389917CB472B009B4090 /* RDVAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVAppDelegate.m; sourceTree = "<group>"; };
-		62C2389B17CB4765009B4090 /* RDVCalendarHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVCalendarHeaderView.h; sourceTree = "<group>"; };
-		62C2389C17CB4765009B4090 /* RDVCalendarHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarHeaderView.m; sourceTree = "<group>"; };
 		62C2389F17CB4E97009B4090 /* RDVCalendarWeekDaysHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVCalendarWeekDaysHeader.h; sourceTree = "<group>"; };
 		62C238A017CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarWeekDaysHeader.m; sourceTree = "<group>"; };
 		62C238A217CB6813009B4090 /* RDVCalendarMonthView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RDVCalendarMonthView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -54,6 +52,8 @@
 		62F77D5917BE0105009873CE /* RDVCalendarDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarDayCell.m; sourceTree = "<group>"; };
 		B44421A617BE61A300A048A6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B44421A717BE61A300A048A6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		B46DECDF1823FE5400D4A823 /* RDVExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVExampleViewController.h; sourceTree = "<group>"; };
+		B46DECE01823FE5400D4A823 /* RDVExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVExampleViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +98,8 @@
 			children = (
 				62C2389817CB472B009B4090 /* RDVAppDelegate.h */,
 				62C2389917CB472B009B4090 /* RDVAppDelegate.m */,
+				B46DECDF1823FE5400D4A823 /* RDVExampleViewController.h */,
+				B46DECE01823FE5400D4A823 /* RDVExampleViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -141,8 +143,6 @@
 				62F77D5617BE00BB009873CE /* RDVCalendarView.m */,
 				62F77D5817BE0105009873CE /* RDVCalendarDayCell.h */,
 				62F77D5917BE0105009873CE /* RDVCalendarDayCell.m */,
-				62C2389B17CB4765009B4090 /* RDVCalendarHeaderView.h */,
-				62C2389C17CB4765009B4090 /* RDVCalendarHeaderView.m */,
 				62C2389F17CB4E97009B4090 /* RDVCalendarWeekDaysHeader.h */,
 				62C238A017CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m */,
 				62C238A217CB6813009B4090 /* RDVCalendarMonthView.h */,
@@ -224,7 +224,7 @@
 				62F77D5A17BE0105009873CE /* RDVCalendarDayCell.m in Sources */,
 				62C2389317CB463C009B4090 /* main.m in Sources */,
 				62C2389A17CB472B009B4090 /* RDVAppDelegate.m in Sources */,
-				62C2389D17CB4765009B4090 /* RDVCalendarHeaderView.m in Sources */,
+				B46DECE11823FE5400D4A823 /* RDVExampleViewController.m in Sources */,
 				62C238A117CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m in Sources */,
 				62C238A417CB6814009B4090 /* RDVCalendarMonthView.m in Sources */,
 			);
@@ -310,7 +310,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Example/RDVCalendarView-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -323,7 +323,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Example/RDVCalendarView-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

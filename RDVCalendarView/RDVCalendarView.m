@@ -1,22 +1,30 @@
+// RDVCalendarView.m
+// RDVCalendarView
 //
-//  RDVCalendarView.m
-//  RDVCalendarView
+// Copyright (c) 2013 Robert Dimitrov
 //
-//  Created by Robert Dimitrov on 8/16/13.
-//  Copyright (c) 2013 Robert Dimitrov. All rights reserved.
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 //
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
 
 #import "RDVCalendarView.h"
-#import "RDVCalendarDayCell.h"
-#import "RDVCalendarWeekDaysHeader.h"
-#import "RDVCalendarHeaderView.h"
-#import "RDVCalendarMonthView.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface RDVCalendarView () <RDVCalendarMonthViewDelegate>
-
-@property (nonatomic) RDVCalendarWeekDaysHeader *weekDaysView;
-@property (nonatomic) RDVCalendarMonthView *monthView;
 
 @property NSDateComponents *selectedDay;
 @property NSDateComponents *month;
@@ -67,14 +75,25 @@
 
 - (void)layoutSubviews {
     CGSize viewSize = self.frame.size;
+    CGSize headerSize = CGSizeMake(viewSize.width, 60.0f);
     
-    if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
-        viewSize = CGSizeMake(CGRectGetHeight(self.frame), CGRectGetWidth(self.frame));
-    }
+    CGSize previousMonthButtonSize = [[self backButton] sizeThatFits:CGSizeMake(100, 50)];
+    CGSize nextMonthButtonSize = [[self forwardButton] sizeThatFits:CGSizeMake(100, 50)];
+    CGSize titleSize = [[self monthLabel] sizeThatFits:CGSizeMake(headerSize.width - previousMonthButtonSize.width -
+                                                                  nextMonthButtonSize.width, 50)];
     
-    [[self headerView] setFrame:CGRectMake(0, 0, viewSize.width, 60)];
+    [[self backButton] setFrame:CGRectMake(10, roundf(headerSize.height / 2 - previousMonthButtonSize.height / 2),
+                                         previousMonthButtonSize.width, previousMonthButtonSize.height)];
     
-    [[self weekDaysView] setFrame:CGRectMake(0, CGRectGetMaxY([self headerView].frame), viewSize.width, 30)];
+    [[self monthLabel] setFrame:CGRectMake(roundf(headerSize.width / 2 - titleSize.width / 2),
+                                         roundf(headerSize.height / 2 - titleSize.height / 2),
+                                         titleSize.width, titleSize.height)];
+    
+    [[self forwardButton] setFrame:CGRectMake(headerSize.width - 10 - nextMonthButtonSize.width,
+                                            roundf(headerSize.height / 2 - nextMonthButtonSize.height / 2),
+                                            nextMonthButtonSize.width, nextMonthButtonSize.height)];
+    
+    [[self weekDaysView] setFrame:CGRectMake(0, headerSize.height, viewSize.width, 30)];
     
     CGSize monthViewSize = [[self monthView] sizeThatFits:CGSizeMake(viewSize.width, viewSize.height -
                                                                      CGRectGetMaxY([self weekDaysView].frame))];
@@ -82,12 +101,24 @@
 }
 
 - (void)setupViews {
-    _headerView = [[RDVCalendarHeaderView alloc] init];
-    [[_headerView backButton] addTarget:self action:@selector(previousMonthButtonTapped:)
+    _monthLabel = [[UILabel alloc] init];
+    [_monthLabel setFont:[UIFont systemFontOfSize:22]];
+    [_monthLabel setTextColor:[UIColor blackColor]];
+    [self addSubview:_monthLabel];
+    
+    _backButton = [[UIButton alloc] init];
+    [_backButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [_backButton setTitle:@"Prev" forState:UIControlStateNormal];
+    [_backButton addTarget:self action:@selector(previousMonthButtonTapped:)
                        forControlEvents:UIControlEventTouchUpInside];
-    [[_headerView forwardButton] addTarget:self action:@selector(nextMonthButtonTapped:)
+    [self addSubview:_backButton];
+    
+    _forwardButton = [[UIButton alloc] init];
+    [_forwardButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [_forwardButton setTitle:@"Next" forState:UIControlStateNormal];
+    [_forwardButton addTarget:self action:@selector(nextMonthButtonTapped:)
                           forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_headerView];
+    [self addSubview:_forwardButton];
     
     _weekDaysView = [[RDVCalendarWeekDaysHeader alloc] init];
     [self addSubview:_weekDaysView];
@@ -122,9 +153,7 @@
     formatter.dateFormat = @"MMMM yyyy";
     
     NSDate *date = [month.calendar dateFromComponents:month];
-    self.headerView.titleLabel.text = [formatter stringFromDate:date];
-    
-    [[self headerView] setNeedsLayout];
+    self.monthLabel.text = [formatter stringFromDate:date];
 }
 
 - (void)updateMonthViewMonth:(NSDateComponents *)month {
@@ -175,12 +204,12 @@
     
     RDVCalendarDayCell *dayCell = [calendarMonthView dequeueReusableCellWithIdentifier:DayIdentifier];
     if (!dayCell) {
-        dayCell = [[RDVCalendarDayCell alloc] initWithStyle:RDVCalendarDayCellSelectionStyleNormal reuseIdentifier:DayIdentifier];
-        [[dayCell titleLabel] setTextColor:[self dayTextColor]];
-        [[dayCell titleLabel] setHighlightedTextColor:[self highlightedDayTextColor]];
+        dayCell = [[RDVCalendarDayCell alloc] initWithReuseIdentifier:DayIdentifier];
+        [[dayCell textLabel] setTextColor:[self dayTextColor]];
+        [[dayCell textLabel] setHighlightedTextColor:[self highlightedDayTextColor]];
     }
     
-    [dayCell.titleLabel setText:[NSString stringWithFormat:@"%d", index + 1]];
+    [dayCell.textLabel setText:[NSString stringWithFormat:@"%d", index + 1]];
     
     if (index + 1 == [self currentDay].day &&
         [self month].month == [self currentDay].month &&
