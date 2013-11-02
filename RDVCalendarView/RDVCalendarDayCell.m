@@ -92,21 +92,24 @@
     _selected = selected;
     _highlighted = NO;
     
-    void (^block)() = ^{
-        if (selected) {
-            [[self backgroundView] setAlpha:0.0f];
-            [[self selectedBackgroundView] setAlpha:1.0f];
+    if ([self selectionStyle] != RDVCalendarDayCellSelectionStyleNone) {
+        void (^block)() = ^{
+            if (selected) {
+                [[self backgroundView] setAlpha:0.0f];
+                [[self selectedBackgroundView] setAlpha:1.0f];
+            } else {
+                [[self backgroundView] setAlpha:1.0f];
+                [[self selectedBackgroundView] setAlpha:0.0f];
+            }
+            [[self textLabel] setHighlighted:selected];
+        };
+        
+        if (animated) {
+            [UIView animateWithDuration:0.25f animations:block];
         } else {
-            [[self backgroundView] setAlpha:1.0f];
-            [[self selectedBackgroundView] setAlpha:0.0f];
+            block();
+            
         }
-        [[self textLabel] setHighlighted:selected];
-    };
-    
-    if (animated) {
-        [UIView animateWithDuration:0.25f animations:block];
-    } else {
-        block();
     }
 }
 
@@ -126,21 +129,23 @@
     _highlighted = highlighted;
     _selected = NO;
     
-    void (^block)() = ^{
-        if (highlighted) {
-            [[self backgroundView] setAlpha:0.0f];
-            [[self selectedBackgroundView] setAlpha:1.0f];
+    if ([self selectionStyle] != RDVCalendarDayCellSelectionStyleNone) {
+        void (^block)() = ^{
+            if (highlighted) {
+                [[self backgroundView] setAlpha:0.0f];
+                [[self selectedBackgroundView] setAlpha:1.0f];
+            } else {
+                [[self backgroundView] setAlpha:1.0f];
+                [[self selectedBackgroundView] setAlpha:0.0f];
+            }
+            [[self textLabel] setHighlighted:highlighted];
+        };
+        
+        if (animated) {
+            [UIView animateWithDuration:0.25f animations:block];
         } else {
-            [[self backgroundView] setAlpha:1.0f];
-            [[self selectedBackgroundView] setAlpha:0.0f];
+            block();
         }
-        [[self textLabel] setHighlighted:highlighted];
-    };
-    
-    if (animated) {
-        [UIView animateWithDuration:0.25f animations:block];
-    } else {
-        block();
     }
 }
 

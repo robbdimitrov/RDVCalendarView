@@ -113,7 +113,7 @@ typedef NS_ENUM(NSInteger, RDVCalendarViewDayCellSeparatorType) {
 /**
  * Registers a class for use in creating new table cells.
  */
-- (void)registerClass:(Class)cellClass forCellReuseIdentifier:(NSString *)identifier;
+- (void)registerDayCellClass:(Class)cellClass;
 
 /**
  * Returns a reusable calendar-view day cell object located by its identifier.
@@ -127,11 +127,20 @@ typedef NS_ENUM(NSInteger, RDVCalendarViewDayCellSeparatorType) {
  */
 - (NSArray *)visibleCells;
 
-- (NSInteger)indexForCell:(RDVCalendarDayCell *)cell;
+/**
+ * Returns an index representing the position of a given day cell.
+ */
+- (NSInteger)indexForDayCell:(RDVCalendarDayCell *)cell;
 
-- (NSInteger)indexForRowAtPoint:(CGPoint)point;
+/**
+ * Returns an index identifying the position of day cell at the given point.
+ */
+- (NSInteger)indexForDayCellAtPoint:(CGPoint)point;
 
-- (RDVCalendarDayCell *)dayCellForRowAtIndex:(NSInteger)index;
+/**
+ * Returns the day cell at the specified index.
+ */
+- (RDVCalendarDayCell *)dayCellForIndex:(NSInteger)index;
 
 #pragma mark - Managing Selections
 
@@ -177,4 +186,38 @@ typedef NS_ENUM(NSInteger, RDVCalendarViewDayCellSeparatorType) {
  * Tells the delegate that the specified row is now selected.
  */
 - (void)calendarView:(RDVCalendarView *)calendarView didSelectCellAtIndex:(NSInteger)index;
+
+/**
+ * Asks the delegate if the specified date should be selected.
+ */
+- (BOOL)calendarView:(RDVCalendarView *)calendarView shouldSelectDate:(NSDate *)date;
+
+/**
+ * Tells the delegate that a specified date is about to be selected.
+ */
+- (void)calendarView:(RDVCalendarView *)calendarView willSelectDate:(NSDate *)date;
+
+/**
+ * Tells the delegate that the specified date is now selected.
+ */
+- (void)calendarView:(RDVCalendarView *)calendarView didSelectDate:(NSDate *)date;
+
+#pragma mark - Customization
+
+/**
+ * Asks the delegate for the height to use for day cells.
+ */
+- (CGFloat)heightForDayCellInCalendarView:(RDVCalendarView *)calendarView;
+
+/**
+ * Asks the delegate for the width to use for day cells.
+ */
+- (CGFloat)widthForDayCellInCalendarView:(RDVCalendarView *)calendarView;
+
+/**
+ * Asks the delegate for additional customization of the day cell.
+ */
+- (void)calendarView:(RDVCalendarView *)calendarView configureDayCell:(RDVCalendarDayCell *)dayCell
+             atIndex:(NSInteger)index;
+
 @end
