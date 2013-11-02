@@ -4,6 +4,11 @@
 
 Under development
 
+## Features
+
+* iPad and iPhone support
+* Calendar view implemented on the principle of UITableView
+
 ## Roadmap
 
 * Day separator with customizable color

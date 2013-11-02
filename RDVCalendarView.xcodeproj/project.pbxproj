@@ -13,8 +13,6 @@
 		62C2389217CB463C009B4090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 62C2388817CB463C009B4090 /* InfoPlist.strings */; };
 		62C2389317CB463C009B4090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C2388A17CB463C009B4090 /* main.m */; };
 		62C2389A17CB472B009B4090 /* RDVAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C2389917CB472B009B4090 /* RDVAppDelegate.m */; };
-		62C238A117CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C238A017CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m */; };
-		62C238A417CB6814009B4090 /* RDVCalendarMonthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C238A317CB6814009B4090 /* RDVCalendarMonthView.m */; };
 		62F77D3617BE0080009873CE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F77D3517BE0080009873CE /* UIKit.framework */; };
 		62F77D3817BE0080009873CE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F77D3717BE0080009873CE /* Foundation.framework */; };
 		62F77D3A17BE0080009873CE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F77D3917BE0080009873CE /* CoreGraphics.framework */; };
@@ -36,10 +34,6 @@
 		62C2388E17CB463C009B4090 /* RDVCalendarView-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RDVCalendarView-Prefix.pch"; sourceTree = "<group>"; };
 		62C2389817CB472B009B4090 /* RDVAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVAppDelegate.h; sourceTree = "<group>"; };
 		62C2389917CB472B009B4090 /* RDVAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVAppDelegate.m; sourceTree = "<group>"; };
-		62C2389F17CB4E97009B4090 /* RDVCalendarWeekDaysHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVCalendarWeekDaysHeader.h; sourceTree = "<group>"; };
-		62C238A017CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarWeekDaysHeader.m; sourceTree = "<group>"; };
-		62C238A217CB6813009B4090 /* RDVCalendarMonthView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = RDVCalendarMonthView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		62C238A317CB6814009B4090 /* RDVCalendarMonthView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = RDVCalendarMonthView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		62F77D3217BE0080009873CE /* RDVCalendarView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RDVCalendarView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62F77D3517BE0080009873CE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		62F77D3717BE0080009873CE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -143,10 +137,6 @@
 				62F77D5617BE00BB009873CE /* RDVCalendarView.m */,
 				62F77D5817BE0105009873CE /* RDVCalendarDayCell.h */,
 				62F77D5917BE0105009873CE /* RDVCalendarDayCell.m */,
-				62C2389F17CB4E97009B4090 /* RDVCalendarWeekDaysHeader.h */,
-				62C238A017CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m */,
-				62C238A217CB6813009B4090 /* RDVCalendarMonthView.h */,
-				62C238A317CB6814009B4090 /* RDVCalendarMonthView.m */,
 			);
 			path = RDVCalendarView;
 			sourceTree = "<group>";
@@ -225,8 +215,6 @@
 				62C2389317CB463C009B4090 /* main.m in Sources */,
 				62C2389A17CB472B009B4090 /* RDVAppDelegate.m in Sources */,
 				B46DECE11823FE5400D4A823 /* RDVExampleViewController.m in Sources */,
-				62C238A117CB4E97009B4090 /* RDVCalendarWeekDaysHeader.m in Sources */,
-				62C238A417CB6814009B4090 /* RDVCalendarMonthView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

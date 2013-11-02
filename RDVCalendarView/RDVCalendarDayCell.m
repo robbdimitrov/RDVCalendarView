@@ -53,6 +53,7 @@
         
         _textLabel = [[UILabel alloc] init];
         [_textLabel setTextColor:[UIColor blackColor]];
+        [_textLabel setHighlightedTextColor:[UIColor whiteColor]];
         [_textLabel setBackgroundColor:[UIColor clearColor]];
         [_textLabel setFont:[UIFont systemFontOfSize:20]];
         [_contentView addSubview:_textLabel];
@@ -89,6 +90,7 @@
     }
     
     _selected = selected;
+    _highlighted = NO;
     
     void (^block)() = ^{
         if (selected) {
@@ -122,6 +124,7 @@
     }
     
     _highlighted = highlighted;
+    _selected = NO;
     
     void (^block)() = ^{
         if (highlighted) {
@@ -148,13 +151,8 @@
 #pragma mark - Cell reuse
 
 - (void)prepareForReuse {
-    if ([self isSelected]) {
-        [self setSelected:NO];
-    }
-    
-    if ([self isHighlighted]) {
-        [self setHighlighted:NO];
-    }
+    [self setSelected:NO];
+    [self setHighlighted:NO];
     
     [[self textLabel] setText:@""];
 }

@@ -26,7 +26,14 @@
 
 @interface RDVCalendarViewController : UIViewController <RDVCalendarViewDelegate>
 
-@property (nonatomic) RDVCalendarView *calendarView;
+/**
+ * Returns the calendar view managed by the controller object.
+ */
+@property (nonatomic, strong) RDVCalendarView *calendarView;
+
+/**
+ * A Boolean value indicating if the controller clears the selection when the calendar appears.
+ */
 @property (nonatomic) BOOL clearsSelectionOnViewWillAppear;
 
 @end

@@ -37,17 +37,12 @@
     self.view = _calendarView;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        return YES;
-    }
-    return toInterfaceOrientation == UIInterfaceOrientationPortrait;
-}
-
-#pragma mark - RDVCalendarViewDelegate
-
-- (void)calendarView:(RDVCalendarView *)calendarView didSelectDate:(NSDate *)date {
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
+    if ([self clearsSelectionOnViewWillAppear]) {
+        [[self calendarView] deselectDayCellAtIndex:[[self calendarView] indexForSelectedDayCell] animated:YES];
+    }
 }
 
 @end
