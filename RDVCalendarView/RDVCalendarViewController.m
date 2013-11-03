@@ -32,6 +32,7 @@
     
     _calendarView = [[RDVCalendarView alloc] initWithFrame:applicationFrame];
     [_calendarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+    [_calendarView setSeparatorStyle:RDVCalendarViewDayCellSeparatorStyleHorizontal];
     [_calendarView setBackgroundColor:[UIColor whiteColor]];
     [_calendarView setDelegate:self];
     self.view = _calendarView;

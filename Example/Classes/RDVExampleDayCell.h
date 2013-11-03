@@ -1,4 +1,4 @@
-// RDVExampleViewController.m
+// RDVExampleDayCell.h
 // RDVCalendarView
 //
 // Copyright (c) 2013 Robert Dimitrov
@@ -21,38 +21,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "RDVExampleViewController.h"
-#import "RDVExampleDayCell.h"
+#import "RDVCalendarDayCell.h"
 
-@interface RDVExampleViewController ()
+@interface RDVExampleDayCell : RDVCalendarDayCell
 
-@end
-
-@implementation RDVExampleViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        self.title = @"Calendar";
-    }
-    return self;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [[self.navigationController navigationBar] setTranslucent:NO];
-    
-    [[self calendarView] registerDayCellClass:[RDVExampleDayCell class]];
-}
-
-- (void)calendarView:(RDVCalendarView *)calendarView configureDayCell:(RDVCalendarDayCell *)dayCell
-             atIndex:(NSInteger)index {
-    RDVExampleDayCell *exampleDayCell = (RDVExampleDayCell *)dayCell;
-    if (index % 5 == 0) {
-        [[exampleDayCell notificationView] setHidden:NO];
-    }
-}
+@property (nonatomic) UIView *notificationView;
 
 @end

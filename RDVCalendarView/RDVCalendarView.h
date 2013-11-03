@@ -94,6 +94,16 @@ typedef NS_ENUM(NSInteger, RDVCalendarViewDayCellSeparatorType) {
 @property(nonatomic, retain) UIColor *separatorColor;
 
 /**
+ * The inset or outset margins for the rectangle around the separators.
+ */
+@property (nonatomic) UIEdgeInsets separatorEdgeInsets;
+
+/**
+ * The inset or outset margins for the rectangle surrounding the day cells.
+ */
+@property (nonatomic) UIEdgeInsets dayCellEdgeInsets;
+
+/**
  * Returns the currently selected date.
  */
 @property (nonatomic) NSDate *selectedDate;
@@ -120,7 +130,7 @@ typedef NS_ENUM(NSInteger, RDVCalendarViewDayCellSeparatorType) {
  */
 - (id)dequeueReusableCellWithIdentifier:(NSString *)identifier;
 
-#pragma mark - Accessing Cells
+#pragma mark - Accessing Day Cells
 
 /**
  * Returns the table cells that are visible in the receiver.

@@ -1,4 +1,4 @@
-// RDVExampleViewController.m
+// RDVExampleDayCell.m
 // RDVCalendarView
 //
 // Copyright (c) 2013 Robert Dimitrov
@@ -21,38 +21,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "RDVExampleViewController.h"
 #import "RDVExampleDayCell.h"
 
-@interface RDVExampleViewController ()
+@implementation RDVExampleDayCell
 
-@end
-
-@implementation RDVExampleViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithReuseIdentifier:reuseIdentifier];
     if (self) {
-        self.title = @"Calendar";
+        _notificationView = [[UIView alloc] init];
+        [_notificationView setBackgroundColor:[UIColor blueColor]];
+        [_notificationView setHidden:YES];
+        [self.contentView addSubview:_notificationView];
     }
     return self;
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)layoutSubviews {
+    [super layoutSubviews];
     
-    [[self.navigationController navigationBar] setTranslucent:NO];
+    CGSize viewSize = self.contentView.frame.size;
     
-    [[self calendarView] registerDayCellClass:[RDVExampleDayCell class]];
+    [[self notificationView] setFrame:CGRectMake(viewSize.width - 10, 0, 10, 10)];
 }
 
-- (void)calendarView:(RDVCalendarView *)calendarView configureDayCell:(RDVCalendarDayCell *)dayCell
-             atIndex:(NSInteger)index {
-    RDVExampleDayCell *exampleDayCell = (RDVExampleDayCell *)dayCell;
-    if (index % 5 == 0) {
-        [[exampleDayCell notificationView] setHidden:NO];
-    }
+- (void)prepareForReuse {
+    [[self notificationView] setHidden:YES];
 }
 
 @end

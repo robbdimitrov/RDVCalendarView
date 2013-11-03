@@ -1,18 +1,30 @@
 # RDVCalendarView
 
-## Status
+[![iPad screenshot](Screenshots/iPad-small.png)](Screenshots/iPad.png)
 
-Under development
+[![iPhone screenshot](Screenshots/iPhone-small.png)](Screenshots/iPhone.png)
 
-## Features
+* Supports iPad and iPhone
+* Supports landscape and portrait orientations
+* Highly customizable
+* Fully localized using NSLocale
 
-* iPad and iPhone support
-* Calendar view implemented on the principle of UITableView
+## Installation
 
-## Roadmap
+Add the items from `RDVCalendarView` directory to your project. If you don't have ARC enabled, you will need to set a `-fobjc-arc` compiler flag on the `.m` source files.
 
-* Day separator with customizable color
-* Optional display of days belonging to the previous or next month
+## Example Usage
+
+See the included demo project.
+
+## Components
+
+* ***RDVCalendarViewController*** - quite simple class, holds ```RDVCalendarView``` instance as its view. Subclass or use as it is. Conforms to ```RDVCalendarViewDelegate``` protocol.
+
+* ***RDVCalendarView*** - build on the principles of UICollectionView and UITableView. If you need custom layout - subclass it and override ```layoutSubviews```. Make sure you call ```[super layoutSubviews]``` inside your implementation.
+
+* ***RDVCalendarDayCell*** - used for the day cells inside ```RDVCalendarView```. It's similar to ```UITableViewCell```. By default contains only ```textLabel```. Add additional subviews to the ```contentView```. Make sure you call ```[super layoutSubviews]``` inside subclass' ```layoutSubviews``` implementation.
+
 
 ## Requirements
 
@@ -21,7 +33,7 @@ Under development
 
 ## Contact
 
-[Robert Dimitrov](http://github.com/robbdimitrov)  
+[Robert Dimitrov](http://robbdimitrov.com)  
 [@robbdimitrov](https://twitter.com/robbdimitrov)
 
 ## License

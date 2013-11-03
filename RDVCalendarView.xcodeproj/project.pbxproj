@@ -21,6 +21,11 @@
 		62F77D5A17BE0105009873CE /* RDVCalendarDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62F77D5917BE0105009873CE /* RDVCalendarDayCell.m */; };
 		B44421A817BE61A300A048A6 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = B44421A617BE61A300A048A6 /* LICENSE */; };
 		B44421A917BE61A300A048A6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = B44421A717BE61A300A048A6 /* README.md */; };
+		B463BCB618265F0400BF5848 /* iPad-small.png in Resources */ = {isa = PBXBuildFile; fileRef = B463BCB218265F0400BF5848 /* iPad-small.png */; };
+		B463BCB718265F0400BF5848 /* iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = B463BCB318265F0400BF5848 /* iPad.png */; };
+		B463BCB818265F0400BF5848 /* iPhone-small.png in Resources */ = {isa = PBXBuildFile; fileRef = B463BCB418265F0400BF5848 /* iPhone-small.png */; };
+		B463BCB918265F0400BF5848 /* iPhone.png in Resources */ = {isa = PBXBuildFile; fileRef = B463BCB518265F0400BF5848 /* iPhone.png */; };
+		B463BCBD1826682B00BF5848 /* RDVExampleDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B463BCBB1826673500BF5848 /* RDVExampleDayCell.m */; };
 		B46DECE11823FE5400D4A823 /* RDVExampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B46DECE01823FE5400D4A823 /* RDVExampleViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +51,12 @@
 		62F77D5917BE0105009873CE /* RDVCalendarDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVCalendarDayCell.m; sourceTree = "<group>"; };
 		B44421A617BE61A300A048A6 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		B44421A717BE61A300A048A6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		B463BCB218265F0400BF5848 /* iPad-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPad-small.png"; sourceTree = "<group>"; };
+		B463BCB318265F0400BF5848 /* iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPad.png; sourceTree = "<group>"; };
+		B463BCB418265F0400BF5848 /* iPhone-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iPhone-small.png"; sourceTree = "<group>"; };
+		B463BCB518265F0400BF5848 /* iPhone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iPhone.png; sourceTree = "<group>"; };
+		B463BCBA1826673500BF5848 /* RDVExampleDayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVExampleDayCell.h; sourceTree = "<group>"; };
+		B463BCBB1826673500BF5848 /* RDVExampleDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVExampleDayCell.m; sourceTree = "<group>"; };
 		B46DECDF1823FE5400D4A823 /* RDVExampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVExampleViewController.h; sourceTree = "<group>"; };
 		B46DECE01823FE5400D4A823 /* RDVExampleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RDVExampleViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,6 +105,8 @@
 				62C2389917CB472B009B4090 /* RDVAppDelegate.m */,
 				B46DECDF1823FE5400D4A823 /* RDVExampleViewController.h */,
 				B46DECE01823FE5400D4A823 /* RDVExampleViewController.m */,
+				B463BCBA1826673500BF5848 /* RDVExampleDayCell.h */,
+				B463BCBB1826673500BF5848 /* RDVExampleDayCell.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -103,6 +116,7 @@
 			children = (
 				B44421A617BE61A300A048A6 /* LICENSE */,
 				B44421A717BE61A300A048A6 /* README.md */,
+				B463BCB118265F0400BF5848 /* Screenshots */,
 				62F77D3B17BE0080009873CE /* RDVCalendarView */,
 				62C2388417CB463C009B4090 /* Example */,
 				62F77D3417BE0080009873CE /* Frameworks */,
@@ -139,6 +153,17 @@
 				62F77D5917BE0105009873CE /* RDVCalendarDayCell.m */,
 			);
 			path = RDVCalendarView;
+			sourceTree = "<group>";
+		};
+		B463BCB118265F0400BF5848 /* Screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				B463BCB218265F0400BF5848 /* iPad-small.png */,
+				B463BCB318265F0400BF5848 /* iPad.png */,
+				B463BCB418265F0400BF5848 /* iPhone-small.png */,
+				B463BCB518265F0400BF5848 /* iPhone.png */,
+			);
+			path = Screenshots;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,7 +218,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B463BCB918265F0400BF5848 /* iPhone.png in Resources */,
 				B44421A817BE61A300A048A6 /* LICENSE in Resources */,
+				B463BCB718265F0400BF5848 /* iPad.png in Resources */,
+				B463BCB818265F0400BF5848 /* iPhone-small.png in Resources */,
+				B463BCB618265F0400BF5848 /* iPad-small.png in Resources */,
 				B44421A917BE61A300A048A6 /* README.md in Resources */,
 				62C2388F17CB463C009B4090 /* Default-568h@2x.png in Resources */,
 				62C2389017CB463C009B4090 /* Default.png in Resources */,
@@ -214,6 +243,7 @@
 				62F77D5A17BE0105009873CE /* RDVCalendarDayCell.m in Sources */,
 				62C2389317CB463C009B4090 /* main.m in Sources */,
 				62C2389A17CB472B009B4090 /* RDVAppDelegate.m in Sources */,
+				B463BCBD1826682B00BF5848 /* RDVExampleDayCell.m in Sources */,
 				B46DECE11823FE5400D4A823 /* RDVExampleViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
