@@ -131,9 +131,11 @@
 - (void)layoutSubviews {
     CGSize viewSize = self.frame.size;
     CGSize headerSize = CGSizeMake(viewSize.width, 60.0f);
+    CGFloat backButtonWidth = MAX([[self backButton] sizeThatFits:CGSizeMake(100, 50)].width, 44);
+    CGFloat forwardButtonWidth = MAX([[self forwardButton] sizeThatFits:CGSizeMake(100, 50)].width, 44);
     
-    CGSize previousMonthButtonSize = CGSizeMake([[self backButton] sizeThatFits:CGSizeMake(100, 50)].width, 50);
-    CGSize nextMonthButtonSize = CGSizeMake([[self forwardButton] sizeThatFits:CGSizeMake(100, 50)].width, 50);
+    CGSize previousMonthButtonSize = CGSizeMake(backButtonWidth, 50);
+    CGSize nextMonthButtonSize = CGSizeMake(forwardButtonWidth, 50);
     CGSize titleSize = CGSizeMake(viewSize.width - previousMonthButtonSize.width - nextMonthButtonSize.width - 10 - 10,
                                   50);
     

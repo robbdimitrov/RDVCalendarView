@@ -11,6 +11,12 @@
 
 ## Installation
 
+### CocoaPods
+
+If you're using [CocoaPods](http://www.cocoapods.org), simply add `pod 'RDVCalendarView'` to your Podfile.
+
+### Drag & Drop
+
 Add the items from `RDVCalendarView` directory to your project. If you don't have ARC enabled, you will need to set a `-fobjc-arc` compiler flag on the `.m` source files.
 
 ## Example Usage
