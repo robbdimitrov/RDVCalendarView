@@ -533,10 +533,10 @@
         if ([[self delegate] respondsToSelector:@selector(calendarView:didSelectDate:)]) {
             [[self delegate] calendarView:self didSelectDate:[[[self month] calendar]
                                                               dateFromComponents:[self selectedDay]]];
-            
-            if ([[self delegate] respondsToSelector:@selector(calendarView:didSelectCellAtIndex:)]) {
-                [[self delegate] calendarView:self didSelectCellAtIndex:index];
-            }
+        }
+        
+        if ([[self delegate] respondsToSelector:@selector(calendarView:didSelectCellAtIndex:)]) {
+            [[self delegate] calendarView:self didSelectCellAtIndex:index];
         }
     }
 }
