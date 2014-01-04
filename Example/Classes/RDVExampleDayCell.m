@@ -46,6 +46,8 @@
 }
 
 - (void)prepareForReuse {
+    [super prepareForReuse];
+    
     [[self notificationView] setHidden:YES];
 }
 

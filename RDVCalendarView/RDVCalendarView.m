@@ -182,7 +182,6 @@
         }
     }
     
-    
     CGFloat elementHorizonralDistance = roundf((viewSize.width - [self dayCellEdgeInsets].left -
                                         [self dayCellEdgeInsets].right - dayWidth * 7) / 6);
     
@@ -210,6 +209,14 @@
         if (![[self visibleCells] containsObject:dayCell]) {
             [_visibleCells addObject:dayCell];
             [self addSubview:dayCell];
+        }
+        
+        if ([self selectedDay] && (i + 1 == [self selectedDay].day &&
+                                   [self month].month == [self selectedDay].month &&
+                                   [self month].year == [self selectedDay].year)) {
+            
+            [dayCell setSelected:YES animated:NO];
+            _selectedDayCell = dayCell;
         }
         
         if ([[self delegate] respondsToSelector:@selector(calendarView:configureDayCell:atIndex:)]) {
@@ -456,6 +463,7 @@
         }
     }
     
+    [dayCell prepareForReuse];
     [dayCell.textLabel setText:[NSString stringWithFormat:@"%d", index + 1]];
     
     if (index + 1 == [self currentDay].day &&
@@ -467,14 +475,6 @@
     }
     
     [[dayCell selectedBackgroundView] setBackgroundColor:[self selectedDayColor]];
-    
-    if ([self selectedDay] && (index + 1 == [self selectedDay].day &&
-        [self month].month == [self selectedDay].month &&
-        [self month].year == [self selectedDay].year)) {
-        
-        [dayCell setSelected:YES animated:NO];
-        _selectedDayCell = dayCell;
-    }
     
     [dayCell setNeedsLayout];
     
@@ -544,7 +544,9 @@
 - (void)deselectDayCellAtIndex:(NSInteger)index animated:(BOOL)animated {
     if ([[self visibleCells] count] > index) {
         RDVCalendarDayCell *dayCell = [self visibleCells][index];
-        [dayCell setSelected:NO animated:animated];
+        if ([dayCell isSelected]) {
+            [dayCell setSelected:NO animated:animated];
+        }
         if (_selectedDayCell == dayCell) {
             _selectedDayCell = nil;
         }
