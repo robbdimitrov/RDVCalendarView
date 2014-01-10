@@ -45,6 +45,12 @@
     [[self.navigationController navigationBar] setTranslucent:NO];
     
     [[self calendarView] registerDayCellClass:[RDVExampleDayCell class]];
+    
+    UIBarButtonItem *todayButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", nil)
+                                                                    style:UIBarButtonItemStylePlain
+                                                                   target:[self calendarView]
+                                                                   action:@selector(showCurrentMonth)];
+    [self.navigationItem setRightBarButtonItem:todayButton];
 }
 
 - (void)calendarView:(RDVCalendarView *)calendarView configureDayCell:(RDVCalendarDayCell *)dayCell

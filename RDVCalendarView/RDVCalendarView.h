@@ -176,6 +176,23 @@ typedef NS_ENUM(NSInteger, RDVCalendarViewDayCellSeparatorType) {
  */
 - (void)reloadData;
 
+#pragma mark - Navigation
+
+/**
+ * Display current month.
+ */
+- (void)showCurrentMonth;
+
+/**
+ * Display previous month.
+ */
+- (void)showPreviousMonth;
+
+/**
+ * Display next month.
+ */
+- (void)showNextMonth;
+
 @end
 
 @protocol RDVCalendarViewDelegate <NSObject>

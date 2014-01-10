@@ -84,14 +84,14 @@
         _backButton = [[UIButton alloc] init];
         [_backButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [_backButton setTitle:@"Prev" forState:UIControlStateNormal];
-        [_backButton addTarget:self action:@selector(previousMonthButtonTapped:)
+        [_backButton addTarget:self action:@selector(showPreviousMonth)
               forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_backButton];
         
         _forwardButton = [[UIButton alloc] init];
         [_forwardButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
         [_forwardButton setTitle:@"Next" forState:UIControlStateNormal];
-        [_forwardButton addTarget:self action:@selector(nextMonthButtonTapped:)
+        [_forwardButton addTarget:self action:@selector(showNextMonth)
                  forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:_forwardButton];
         
@@ -346,24 +346,6 @@
     [self reloadData];
 }
 
-#pragma mark - Button methods
-
-- (void)previousMonthButtonTapped:(id)sender {
-    NSInteger month = [[self month] month] - 1;
-    [[self month] setMonth:month];
-    
-    [self updateMonthLabelMonth:[self month]];
-    [self updateMonthViewMonth:[self month]];
-}
-
-- (void)nextMonthButtonTapped:(id)sender {
-    NSInteger month = [[self month] month] + 1;
-    [[self month] setMonth:month];
-    
-    [self updateMonthLabelMonth:[self month]];
-    [self updateMonthViewMonth:[self month]];
-}
-
 #pragma mark - Reloading the Calendar view
 
 - (void)reloadData {
@@ -585,6 +567,31 @@
     }
     
     return view;
+}
+
+#pragma mark - Navigation
+
+- (void)showCurrentMonth {
+    [[self month] setMonth:[[self currentDay] month]];
+    
+    [self updateMonthLabelMonth:[self month]];
+    [self updateMonthViewMonth:[self month]];
+}
+
+- (void)showPreviousMonth {
+    NSInteger month = [[self month] month] - 1;
+    [[self month] setMonth:month];
+    
+    [self updateMonthLabelMonth:[self month]];
+    [self updateMonthViewMonth:[self month]];
+}
+
+- (void)showNextMonth {
+    NSInteger month = [[self month] month] + 1;
+    [[self month] setMonth:month];
+    
+    [self updateMonthLabelMonth:[self month]];
+    [self updateMonthViewMonth:[self month]];
 }
 
 #pragma mark - Locale change handling
