@@ -118,6 +118,11 @@ typedef NS_ENUM(NSInteger, RDVCalendarViewDayCellSeparatorType) {
  */
 @property(nonatomic) CGFloat dayCellHeight;
 
+/**
+ * Date components representing the currently displayed month. (read-only)
+ */
+@property (readonly) NSDateComponents *month;
+
 #pragma mark - Creating Calendar View Day Cells
 
 /**
@@ -228,6 +233,12 @@ typedef NS_ENUM(NSInteger, RDVCalendarViewDayCellSeparatorType) {
  * Tells the delegate that the specified date is now selected.
  */
 - (void)calendarView:(RDVCalendarView *)calendarView didSelectDate:(NSDate *)date;
+
+/**
+ * Tells the delegate that the currently displayed month has changed.
+ * @param month The newly selected month.
+ */
+- (void)calendarView:(RDVCalendarView *)calendarView didChangeMonth:(NSDateComponents *)month;
 
 #pragma mark - Customization
 

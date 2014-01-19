@@ -584,6 +584,10 @@
     
     [self updateMonthLabelMonth:[self month]];
     [self updateMonthViewMonth:[self month]];
+    
+    if ([[self delegate] respondsToSelector:@selector(calendarView:didChangeMonth:)]) {
+        [[self delegate] calendarView:self didChangeMonth:self.month];
+    }
 }
 
 - (void)showNextMonth {
@@ -592,6 +596,10 @@
     
     [self updateMonthLabelMonth:[self month]];
     [self updateMonthViewMonth:[self month]];
+    
+    if ([[self delegate] respondsToSelector:@selector(calendarView:didChangeMonth:)]) {
+        [[self delegate] calendarView:self didChangeMonth:self.month];
+    }
 }
 
 #pragma mark - Locale change handling
