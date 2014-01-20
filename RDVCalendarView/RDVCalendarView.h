@@ -121,7 +121,7 @@ typedef NS_ENUM(NSInteger, RDVCalendarViewDayCellSeparatorType) {
 /**
  * Date components representing the currently displayed month. (read-only)
  */
-@property (readonly) NSDateComponents *month;
+@property (atomic, strong, readonly) NSDateComponents *month;
 
 #pragma mark - Creating Calendar View Day Cells
 

@@ -41,10 +41,10 @@
     Class _dayCellClass;
 }
 
-@property NSDateComponents *selectedDay;
-@property NSDateComponents *month;
-@property NSDateComponents *currentDay;
-@property NSDate *firstDay;
+@property (atomic, strong) NSDateComponents *selectedDay;
+@property (atomic, strong, readwrite) NSDateComponents *month;
+@property (atomic, strong) NSDateComponents *currentDay;
+@property (atomic, strong) NSDate *firstDay;
 
 @end
 
@@ -571,35 +571,33 @@
 
 #pragma mark - Navigation
 
+- (void)setDisplayedMonth:(NSDateComponents *)month {
+    [self updateMonthLabelMonth:[self month]];
+    [self updateMonthViewMonth:[self month]];
+    
+    if ([[self delegate] respondsToSelector:@selector(calendarView:didChangeMonth:)]) {
+        [[self delegate] calendarView:self didChangeMonth:self.month];
+    }
+}
+
 - (void)showCurrentMonth {
     [[self month] setMonth:[[self currentDay] month]];
     
-    [self updateMonthLabelMonth:[self month]];
-    [self updateMonthViewMonth:[self month]];
+    [self setDisplayedMonth:[self month]];
 }
 
 - (void)showPreviousMonth {
     NSInteger month = [[self month] month] - 1;
     [[self month] setMonth:month];
     
-    [self updateMonthLabelMonth:[self month]];
-    [self updateMonthViewMonth:[self month]];
-    
-    if ([[self delegate] respondsToSelector:@selector(calendarView:didChangeMonth:)]) {
-        [[self delegate] calendarView:self didChangeMonth:self.month];
-    }
+    [self setDisplayedMonth:[self month]];
 }
 
 - (void)showNextMonth {
     NSInteger month = [[self month] month] + 1;
     [[self month] setMonth:month];
     
-    [self updateMonthLabelMonth:[self month]];
-    [self updateMonthViewMonth:[self month]];
-    
-    if ([[self delegate] respondsToSelector:@selector(calendarView:didChangeMonth:)]) {
-        [[self delegate] calendarView:self didChangeMonth:self.month];
-    }
+    [self setDisplayedMonth:[self month]];
 }
 
 #pragma mark - Locale change handling
