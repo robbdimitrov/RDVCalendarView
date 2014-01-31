@@ -157,6 +157,11 @@ typedef NS_ENUM(NSInteger, RDVCalendarViewDayCellSeparatorType) {
  */
 - (RDVCalendarDayCell *)dayCellForIndex:(NSInteger)index;
 
+/**
+ * Returns the NSDate at the specified index.
+ */
+- (NSDate *)dateForIndex:(NSInteger)index;
+
 #pragma mark - Managing Selections
 
 /**

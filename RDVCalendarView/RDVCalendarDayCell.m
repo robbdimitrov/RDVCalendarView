@@ -93,22 +93,27 @@
     _highlighted = NO;
     
     if ([self selectionStyle] != RDVCalendarDayCellSelectionStyleNone) {
+        __weak RDVCalendarDayCell *weakSelf = self;
+        
         void (^block)() = ^{
             if (selected) {
-                [[self backgroundView] setAlpha:0.0f];
-                [[self selectedBackgroundView] setAlpha:1.0f];
+                [[weakSelf backgroundView] setAlpha:0.0f];
+                [[weakSelf selectedBackgroundView] setAlpha:1.0f];
             } else {
-                [[self backgroundView] setAlpha:1.0f];
-                [[self selectedBackgroundView] setAlpha:0.0f];
+                [[weakSelf backgroundView] setAlpha:1.0f];
+                [[weakSelf selectedBackgroundView] setAlpha:0.0f];
             }
-            [[self textLabel] setHighlighted:selected];
+            for (id subview in [[weakSelf contentView] subviews]) {
+                if ([subview respondsToSelector:@selector(setHighlighted:)]) {
+                    [subview setHighlighted:selected];
+                }
+            }
         };
         
         if (animated) {
             [UIView animateWithDuration:0.25f animations:block];
         } else {
             block();
-            
         }
     }
 }
@@ -130,15 +135,21 @@
     _selected = NO;
     
     if ([self selectionStyle] != RDVCalendarDayCellSelectionStyleNone) {
+        __weak RDVCalendarDayCell *weakSelf = self;
+        
         void (^block)() = ^{
             if (highlighted) {
-                [[self backgroundView] setAlpha:0.0f];
-                [[self selectedBackgroundView] setAlpha:1.0f];
+                [[weakSelf backgroundView] setAlpha:0.0f];
+                [[weakSelf selectedBackgroundView] setAlpha:1.0f];
             } else {
-                [[self backgroundView] setAlpha:1.0f];
-                [[self selectedBackgroundView] setAlpha:0.0f];
+                [[weakSelf backgroundView] setAlpha:1.0f];
+                [[weakSelf selectedBackgroundView] setAlpha:0.0f];
             }
-            [[self textLabel] setHighlighted:highlighted];
+            for (id subview in [[weakSelf contentView] subviews]) {
+                if ([subview respondsToSelector:@selector(setHighlighted:)]) {
+                    [subview setHighlighted:highlighted];
+                }
+            }
         };
         
         if (animated) {

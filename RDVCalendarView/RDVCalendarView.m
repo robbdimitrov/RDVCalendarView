@@ -99,7 +99,7 @@
         
         // Setup calendar
         
-        NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
+        NSCalendar *calendar = [self calendar];
         
         _currentDay = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:[NSDate date]];
         
@@ -286,8 +286,18 @@
 
 #pragma mark - Set up a calendar view
 
+- (NSCalendar *)calendar {
+    static NSCalendar *calendar = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        calendar = [NSCalendar autoupdatingCurrentCalendar];
+        [calendar setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    });
+    return calendar;
+}
+
 - (void)setupWeekDays {
-    NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
+    NSCalendar *calendar = [self calendar];
     NSInteger firstWeekDay = [calendar firstWeekday] - 1;
     
     // We need an NSDateFormatter to have access to the localized weekday strings
@@ -390,7 +400,7 @@
     NSDate *oldDate = [self selectedDate];
     
     if (![oldDate isEqualToDate:selectedDate]) {
-        NSCalendar *calendar = [NSCalendar autoupdatingCurrentCalendar];
+        NSCalendar *calendar = [self calendar];
         
         if (![self selectedDay]) {
             [self setSelectedDay:[[NSDateComponents alloc] init]];
@@ -420,7 +430,7 @@
 
 - (NSDate *)selectedDate {
     if ([self selectedDay]) {
-        return [[NSCalendar autoupdatingCurrentCalendar] dateFromComponents:[self selectedDay]];
+        return [[self calendar] dateFromComponents:[self selectedDay]];
     }
     return nil;
 }
@@ -445,20 +455,22 @@
         }
     }
     
-    [dayCell prepareForReuse];
-    [dayCell.textLabel setText:[NSString stringWithFormat:@"%d", index + 1]];
-    
-    if (index + 1 == [self currentDay].day &&
-        [self month].month == [self currentDay].month &&
-        [self month].year == [self currentDay].year) {
+    if (![[self visibleCells] containsObject:dayCell]) {
+        [dayCell prepareForReuse];
+        [dayCell.textLabel setText:[NSString stringWithFormat:@"%d", index + 1]];
+        
+        if (index + 1 == [self currentDay].day &&
+            [self month].month == [self currentDay].month &&
+            [self month].year == [self currentDay].year) {
             [[dayCell backgroundView] setBackgroundColor:[self currentDayColor]];
-    } else {
-        [[dayCell backgroundView] setBackgroundColor:[self normalDayColor]];
+        } else {
+            [[dayCell backgroundView] setBackgroundColor:[self normalDayColor]];
+        }
+        
+        [[dayCell selectedBackgroundView] setBackgroundColor:[self selectedDayColor]];
+        
+        [dayCell setNeedsLayout];
     }
-    
-    [[dayCell selectedBackgroundView] setBackgroundColor:[self selectedDayColor]];
-    
-    [dayCell setNeedsLayout];
     
     return dayCell;
 }
@@ -475,6 +487,17 @@
     }
     
     return 0;
+}
+
+- (NSDate *)dateForIndex:(NSInteger)index {
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    [dateComponents setYear:[[self month] year]];
+    [dateComponents setMonth:[[self month] month]];
+    [dateComponents setDay:(index + 1)];
+    
+    NSDate *date = [[self calendar] dateFromComponents:dateComponents];
+    
+    return date;
 }
 
 #pragma mark - Managing selections
@@ -496,10 +519,10 @@
         NSDateComponents *selectedDayComponents = [[NSDateComponents alloc] init];
         [selectedDayComponents setMonth:[[self month] month]];
         [selectedDayComponents setYear:[[self month] year]];
-        [selectedDayComponents setDay:index + 1];
+        [selectedDayComponents setDay:(index + 1)];
         
         if ([[self delegate] respondsToSelector:@selector(calendarView:willSelectDate:)]) {
-            [[self delegate] calendarView:self willSelectDate:[[[self month] calendar]
+            [[self delegate] calendarView:self willSelectDate:[[self calendar]
                                                                dateFromComponents:selectedDayComponents]];
         }
         
@@ -513,7 +536,7 @@
         [self setSelectedDay:selectedDayComponents];
         
         if ([[self delegate] respondsToSelector:@selector(calendarView:didSelectDate:)]) {
-            [[self delegate] calendarView:self didSelectDate:[[[self month] calendar]
+            [[self delegate] calendarView:self didSelectDate:[[self calendar]
                                                               dateFromComponents:[self selectedDay]]];
         }
         
@@ -540,21 +563,21 @@
 #pragma mark - Helper methods
 
 - (NSInteger)numberOfWeeks {
-    return [[[self month] calendar] rangeOfUnit:NSDayCalendarUnit
-                                         inUnit:NSWeekCalendarUnit
-                                        forDate:[self firstDay]].length;
+    return [[self calendar] rangeOfUnit:NSDayCalendarUnit
+                                 inUnit:NSWeekCalendarUnit
+                                forDate:[self firstDay]].length;
 }
 
 - (NSInteger)numberOfDays {
-    return [[[self month] calendar] rangeOfUnit:NSDayCalendarUnit
-                                         inUnit:NSMonthCalendarUnit
-                                        forDate:[self firstDay]].length;
+    return [[self calendar] rangeOfUnit:NSDayCalendarUnit
+                                 inUnit:NSMonthCalendarUnit
+                                forDate:[self firstDay]].length;
 }
 
 - (NSInteger)numberOfDaysInFirstWeek {
-    return [[[self month] calendar] rangeOfUnit:NSDayCalendarUnit
-                                         inUnit:NSWeekCalendarUnit
-                                        forDate:[self firstDay]].length;
+    return [[self calendar] rangeOfUnit:NSDayCalendarUnit
+                                 inUnit:NSWeekCalendarUnit
+                                forDate:[self firstDay]].length;
 }
 
 - (RDVCalendarDayCell *)viewAtLocation:(CGPoint)location {
@@ -605,6 +628,7 @@
 - (void)currentLocaleDidChange:(NSNotification *)notification {
     [self setupWeekDays];
     [self updateMonthLabelMonth:[self month]];
+    [self setNeedsLayout];
 }
 
 #pragma mark - Touch handling
