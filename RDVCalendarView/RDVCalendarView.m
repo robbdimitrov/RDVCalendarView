@@ -57,8 +57,8 @@
         _dayCells = [[NSMutableArray alloc] initWithCapacity:31];
         _visibleCells = [[NSMutableArray alloc] initWithCapacity:31];
         
-        _visibleSeparators = [[NSMutableArray alloc] initWithCapacity:6];
-        _separators = [[NSMutableArray alloc] initWithCapacity:6];
+        _visibleSeparators = [[NSMutableArray alloc] initWithCapacity:12];
+        _separators = [[NSMutableArray alloc] initWithCapacity:12];
         
         // Setup defaults
         
@@ -112,14 +112,22 @@
                                       NSCalendarCalendarUnit
                              fromDate:currentDate];
         _month.day = 1;
+        
         [self updateMonthLabelMonth:_month];
         
         [self updateMonthViewMonth:_month];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(currentLocaleDidChange:)
-                                                     name:NSCurrentLocaleDidChangeNotification
-                                                   object:nil];
+        NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+        
+        [defaultCenter addObserver:self
+                         selector:@selector(currentLocaleDidChange:)
+                             name:NSCurrentLocaleDidChangeNotification
+                           object:nil];
+        
+        [defaultCenter addObserver:self
+                          selector:@selector(deviceDidChangeOrientation:)
+                              name:UIDeviceOrientationDidChangeNotification
+                            object:nil];
     }
     return self;
 }
@@ -169,6 +177,8 @@
         }
     }
     
+    CGFloat weekDayLabelsEndY = CGRectGetMaxY([[self monthLabel] frame]) + [self weekDayHeight];
+    
     CGFloat dayHeight = 0;
     if ([[self delegate] respondsToSelector:@selector(heightForDayCellInCalendarView:)]) {
         dayHeight = [[self delegate] heightForDayCellInCalendarView:self];
@@ -176,7 +186,8 @@
         dayHeight = [self dayCellHeight];
     } else {
         if (viewSize.width > viewSize.height) {
-            dayHeight = dayWidth * 3 / 4;
+            dayHeight = roundf((viewSize.height - weekDayLabelsEndY) / 6) -
+            [self dayCellEdgeInsets].top - [self dayCellEdgeInsets].bottom;
         } else {
             dayHeight = dayWidth;
         }
@@ -205,7 +216,7 @@
     NSInteger row = 0;
     
     for (NSInteger i = 0; i < [self numberOfDays]; i++) {
-        RDVCalendarDayCell *dayCell = dayCell = [self dayCellForIndex:i];
+        RDVCalendarDayCell *dayCell = [self dayCellForIndex:i];
         if (![[self visibleCells] containsObject:dayCell]) {
             [_visibleCells addObject:dayCell];
             [self addSubview:dayCell];
@@ -235,19 +246,28 @@
         // Layout separators
         
         if (i == 0 || column == 0) {
-            if ([self separatorStyle] != RDVCalendarViewDayCellSeparatorStyleNone) {
+            if ([self separatorStyle] & RDVCalendarViewDayCellSeparatorTypeHorizontal) {
                 if (i < [self numberOfDays]) {
-                    UIView *separator = [self dayCellSeparatorForRow:row];
-                    
-                    if ([separator superview] != self) {
-                        [self addSubview:separator];
-                    }
+                    UIView *separator = [self dayCellSeparator];
                     
                     [separator setFrame:CGRectMake([self separatorEdgeInsets].left, CGRectGetMinY(dayCell.frame) +
                                                    ([self separatorEdgeInsets].top - [self separatorEdgeInsets].bottom),
                                                    viewSize.width - [self separatorEdgeInsets].left -
                                                    [self separatorEdgeInsets].right, 1)];
                 }
+            }
+        }
+        
+        if (row == 1 && column < [[self weekDayLabels] count]) {
+            if ([self separatorStyle] & RDVCalendarViewDayCellSeparatorTypeVertical) {
+                UIView *separator = [self dayCellSeparator];
+                
+                [separator setFrame:CGRectMake([self separatorEdgeInsets].left + CGRectGetMaxX(dayCell.frame) +
+                                               roundf(elementHorizonralDistance / 2),
+                                               weekDayLabelsEndY + ([self separatorEdgeInsets].top -
+                                                                               [self separatorEdgeInsets].bottom),
+                                               1, viewSize.height - [self separatorEdgeInsets].top -
+                                               [self separatorEdgeInsets].bottom)];
             }
         }
         
@@ -291,7 +311,6 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         calendar = [NSCalendar autoupdatingCurrentCalendar];
-        [calendar setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     });
     return calendar;
 }
@@ -376,20 +395,22 @@
 
 #pragma mark - Separators
 
-- (id)dayCellSeparatorForRow:(NSInteger)row {
+- (UIView *)dayCellSeparator {
     UIView *separator = nil;
     if ([_separators count]) {
         separator = [_separators lastObject];
         [_separators removeObject:separator];
         [_visibleSeparators addObject:separator];
-    } else if ([_visibleSeparators count] && [_visibleSeparators count] > row) {
-        separator = _visibleSeparators[row];
     } else {
         separator = [[UIView alloc] init];
         [_visibleSeparators addObject:separator];
     }
     
     [separator setBackgroundColor:[self separatorColor]];
+    
+    if ([separator superview] != self) {
+        [self addSubview:separator];
+    }
     
     return separator;
 }
@@ -442,7 +463,7 @@
 }
 
 - (RDVCalendarDayCell *)dayCellForIndex:(NSInteger)index {
-    static NSString *DayIdentifier = @"Day";
+    static NSString *DayIdentifier = @"DayCell";
     
     RDVCalendarDayCell *dayCell = nil;
     
@@ -629,6 +650,12 @@
     [self setupWeekDays];
     [self updateMonthLabelMonth:[self month]];
     [self setNeedsLayout];
+}
+
+#pragma mark - Orientation cnahge handling
+
+- (void)deviceDidChangeOrientation:(NSNotification *)notification {
+    [self reloadData];
 }
 
 #pragma mark - Touch handling

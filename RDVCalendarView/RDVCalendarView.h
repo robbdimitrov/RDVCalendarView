@@ -26,8 +26,11 @@
 @class RDVCalendarDayCell;
 
 typedef NS_ENUM(NSInteger, RDVCalendarViewDayCellSeparatorType) {
-    RDVCalendarViewDayCellSeparatorStyleNone,
-    RDVCalendarViewDayCellSeparatorStyleHorizontal,
+    RDVCalendarViewDayCellSeparatorTypeNone        = 0,
+    RDVCalendarViewDayCellSeparatorTypeHorizontal  = 1 << 0,
+    RDVCalendarViewDayCellSeparatorTypeVertical    = 1 << 2,
+    RDVCalendarViewDayCellSeparatorTypeBoth        = (RDVCalendarViewDayCellSeparatorTypeHorizontal |
+                                                       RDVCalendarViewDayCellSeparatorTypeVertical),
 };
 
 @protocol RDVCalendarViewDelegate;
@@ -71,7 +74,7 @@ typedef NS_ENUM(NSInteger, RDVCalendarViewDayCellSeparatorType) {
 /**
  * The style for separators used between day cells.
  */
-@property(nonatomic) RDVCalendarViewDayCellSeparatorType separatorStyle;
+@property (nonatomic) RDVCalendarViewDayCellSeparatorType separatorStyle;
 
 /**
  * Returs the color of the current day cell.
