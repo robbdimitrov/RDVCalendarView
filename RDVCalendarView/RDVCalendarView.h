@@ -25,7 +25,7 @@
 
 @class RDVCalendarDayCell;
 
-typedef NS_ENUM(NSInteger, RDVCalendarViewDayCellSeparatorType) {
+typedef NS_OPTIONS(NSInteger, RDVCalendarViewDayCellSeparatorType) {
     RDVCalendarViewDayCellSeparatorTypeNone        = 0,
     RDVCalendarViewDayCellSeparatorTypeHorizontal  = 1 << 0,
     RDVCalendarViewDayCellSeparatorTypeVertical    = 1 << 2,

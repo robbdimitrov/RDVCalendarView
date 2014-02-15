@@ -85,10 +85,6 @@
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    if (selected == _selected) {
-        return;
-    }
-    
     _selected = selected;
     _highlighted = NO;
     
@@ -127,10 +123,6 @@
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    if (highlighted == _highlighted) {
-        return;
-    }
-    
     _highlighted = highlighted;
     _selected = NO;
     

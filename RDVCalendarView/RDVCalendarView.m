@@ -552,7 +552,7 @@
         }
         
         _selectedDayCell = [self dayCellForIndex:index];
-        [_selectedDayCell setSelected:YES];
+        [_selectedDayCell setSelected:YES animated:animated];
         
         [self setSelectedDay:selectedDayComponents];
         
