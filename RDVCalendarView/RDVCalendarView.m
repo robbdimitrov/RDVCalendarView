@@ -50,8 +50,7 @@
 
 @implementation RDVCalendarView
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
         _dayCells = [[NSMutableArray alloc] initWithCapacity:31];
@@ -215,14 +214,14 @@
     
     NSInteger row = 0;
     
-    for (NSInteger i = 0; i < [self numberOfDays]; i++) {
-        RDVCalendarDayCell *dayCell = [self dayCellForIndex:i];
+    for (NSInteger dayIndex = 0; dayIndex < [self numberOfDays]; dayIndex++) {
+        RDVCalendarDayCell *dayCell = [self dayCellForIndex:dayIndex];
         if (![[self visibleCells] containsObject:dayCell]) {
             [_visibleCells addObject:dayCell];
             [self addSubview:dayCell];
         }
         
-        if ([self selectedDay] && (i + 1 == [self selectedDay].day &&
+        if ([self selectedDay] && (dayIndex + 1 == [self selectedDay].day &&
                                    [self month].month == [self selectedDay].month &&
                                    [self month].year == [self selectedDay].year)) {
             
@@ -231,7 +230,7 @@
         }
         
         if ([[self delegate] respondsToSelector:@selector(calendarView:configureDayCell:atIndex:)]) {
-            [[self delegate] calendarView:self configureDayCell:dayCell atIndex:i];
+            [[self delegate] calendarView:self configureDayCell:dayCell atIndex:dayIndex];
         }
         
         CGFloat dayCellXPosition = [self dayCellEdgeInsets].left + (column * dayWidth) + (column * elementHorizonralDistance);
@@ -245,9 +244,9 @@
         
         // Layout separators
         
-        if (i == 0 || column == 0) {
+        if (dayIndex == 0 || column == 0) {
             if ([self separatorStyle] & RDVCalendarViewDayCellSeparatorTypeHorizontal) {
-                if (i < [self numberOfDays]) {
+                if (dayIndex < [self numberOfDays]) {
                     UIView *separator = [self dayCellSeparator];
                     
                     [separator setFrame:CGRectMake([self separatorEdgeInsets].left, CGRectGetMinY(dayCell.frame) +
@@ -432,6 +431,10 @@
                                                                         NSDayCalendarUnit
                                                                fromDate:selectedDate];
         
+        if (![self selectedDay]) {
+            [self setSelectedDay:[[NSDateComponents alloc] init]];
+        }
+        
         [[self selectedDay] setMonth:[selectedDateComponents month]];
         [[self selectedDay] setYear:[selectedDateComponents year]];
         [[self selectedDay] setDay:[selectedDateComponents day]];
@@ -532,19 +535,8 @@
 
 - (void)selectDayCellAtIndex:(NSInteger)index animated:(BOOL)animated {
     if ([[self visibleCells] count] > index) {
-        if (_selectedDayCell) {
-            NSInteger oldSelectedIndex = [self indexForDayCell:_selectedDayCell];
-            [self deselectDayCellAtIndex:oldSelectedIndex animated:NO];
-        }
-        
-        NSDateComponents *selectedDayComponents = [[NSDateComponents alloc] init];
-        [selectedDayComponents setMonth:[[self month] month]];
-        [selectedDayComponents setYear:[[self month] year]];
-        [selectedDayComponents setDay:(index + 1)];
-        
         if ([[self delegate] respondsToSelector:@selector(calendarView:willSelectDate:)]) {
-            [[self delegate] calendarView:self willSelectDate:[[self calendar]
-                                                               dateFromComponents:selectedDayComponents]];
+            [[self delegate] calendarView:self willSelectDate:[self dateForIndex:index]];
         }
         
         if ([[self delegate] respondsToSelector:@selector(calendarView:willSelectCellAtIndex:)]) {
@@ -554,11 +546,16 @@
         _selectedDayCell = [self dayCellForIndex:index];
         [_selectedDayCell setSelected:YES animated:animated];
         
-        [self setSelectedDay:selectedDayComponents];
+        if (![self selectedDay]) {
+            [self setSelectedDay:[[NSDateComponents alloc] init]];
+        }
+        
+        [self.selectedDay setMonth:[[self month] month]];
+        [self.selectedDay setYear:[[self month] year]];
+        [self.selectedDay setDay:index + 1];
         
         if ([[self delegate] respondsToSelector:@selector(calendarView:didSelectDate:)]) {
-            [[self delegate] calendarView:self didSelectDate:[[self calendar]
-                                                              dateFromComponents:[self selectedDay]]];
+            [[self delegate] calendarView:self didSelectDate:[self dateForIndex:index]];
         }
         
         if ([[self delegate] respondsToSelector:@selector(calendarView:didSelectCellAtIndex:)]) {
@@ -570,9 +567,13 @@
 - (void)deselectDayCellAtIndex:(NSInteger)index animated:(BOOL)animated {
     if ([[self visibleCells] count] > index) {
         RDVCalendarDayCell *dayCell = [self visibleCells][index];
+        
         if ([dayCell isSelected]) {
             [dayCell setSelected:NO animated:animated];
+        } else if ([dayCell isHighlighted]) {
+            [dayCell setHighlighted:NO animated:animated];
         }
+        
         if (_selectedDayCell == dayCell) {
             _selectedDayCell = nil;
         }
@@ -671,14 +672,8 @@
         if (selectedDayCell && selectedDayCell != _selectedDayCell) {
             NSInteger cellIndex = [self indexForDayCell:selectedDayCell];
             
-            NSDateComponents *selectedDayComponents = [[NSDateComponents alloc] init];
-            [selectedDayComponents setMonth:[[self month] month]];
-            [selectedDayComponents setYear:[[self month] year]];
-            [selectedDayComponents setDay:cellIndex + 1];
-            
             if ([[self delegate] respondsToSelector:@selector(calendarView:shouldSelectDate:)]) {
-                if (![[self delegate] calendarView:self shouldSelectDate:[[[self month] calendar]
-                                                                          dateFromComponents:selectedDayComponents]]) {
+                if (![[self delegate] calendarView:self shouldSelectDate:[self dateForIndex:cellIndex]]) {
                     return;
                 }
             }
@@ -689,7 +684,8 @@
                 }
             }
             
-            [_selectedDayCell setSelected:NO];
+            [self deselectDayCellAtIndex:[self indexForDayCell:_selectedDayCell]
+                                animated:NO];
             _selectedDayCell = selectedDayCell;
             [_selectedDayCell setHighlighted:YES];
         }
@@ -705,14 +701,8 @@
         RDVCalendarDayCell *selectedDayCell = [self viewAtLocation:touchLocation];
         
         if (selectedDayCell != _selectedDayCell) {
-            if ([_selectedDayCell isSelected]) {
-                NSInteger cellIndex = [self indexForDayCell:_selectedDayCell];
-                [self deselectDayCellAtIndex:cellIndex animated:NO];
-            } else {
-                [_selectedDayCell setHighlighted:NO];
-            }
-            
-            _selectedDayCell = nil;
+            [self deselectDayCellAtIndex:[self indexForDayCell:_selectedDayCell]
+                                animated:NO];
         }
     } else if ([_selectedDayCell isHighlighted]) {
         [_selectedDayCell setHighlighted:NO];
@@ -738,8 +728,8 @@
             
             [self selectDayCellAtIndex:cellIndex animated:NO];
         } else {
-            [_selectedDayCell setSelected:NO];
-            _selectedDayCell = nil;
+            [self deselectDayCellAtIndex:[self indexForDayCell:_selectedDayCell]
+                                animated:NO];
         }
     }
 }
