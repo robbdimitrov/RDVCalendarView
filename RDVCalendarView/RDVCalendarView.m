@@ -39,6 +39,8 @@
     NSArray *_weekDays;
     
     Class _dayCellClass;
+    
+    UIInterfaceOrientation _orientation;
 }
 
 @property (atomic, strong) NSDateComponents *selectedDay;
@@ -127,6 +129,8 @@
                           selector:@selector(deviceDidChangeOrientation:)
                               name:UIDeviceOrientationDidChangeNotification
                             object:nil];
+        
+        _orientation = [[UIApplication sharedApplication] statusBarOrientation];
     }
     return self;
 }
@@ -656,7 +660,13 @@
 #pragma mark - Orientation cnahge handling
 
 - (void)deviceDidChangeOrientation:(NSNotification *)notification {
-    [self reloadData];
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    
+    // orientation has changed to a new one
+    if (UIInterfaceOrientationIsLandscape(orientation) != UIInterfaceOrientationIsLandscape(_orientation)) {
+        _orientation = orientation;
+        [self reloadData];
+    }
 }
 
 #pragma mark - Touch handling
