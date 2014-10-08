@@ -367,7 +367,7 @@
 
 - (void)updateMonthLabelMonth:(NSDateComponents*)month {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"MMMM yyyy";
+    formatter.dateFormat = @"LLLL yyyy";
     
     NSDate *date = [month.calendar dateFromComponents:month];
     self.monthLabel.text = [formatter stringFromDate:date];
