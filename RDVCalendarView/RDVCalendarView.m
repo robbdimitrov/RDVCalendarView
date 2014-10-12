@@ -631,20 +631,42 @@
 
 - (void)showCurrentMonth {
     [[self month] setMonth:[[self currentDay] month]];
-    
+    [[self month] setYear:[[self currentDay] year]];
+ 
     [self setDisplayedMonth:[self month]];
 }
 
 - (void)showPreviousMonth {
-    NSInteger month = [[self month] month] - 1;
-    [[self month] setMonth:month];
+    NSCalendar *calendar = [self calendar];
+    NSDateComponents *inc = [[NSDateComponents alloc] init];
+    inc.month = -1;
     
+    NSDate *date = [calendar dateFromComponents:self.month];
+    NSDate *newDate = [calendar dateByAddingComponents:inc toDate:date options:0];
+    
+    self.month = [calendar components:NSYearCalendarUnit|
+                  NSMonthCalendarUnit|
+                  NSDayCalendarUnit|
+                  NSWeekdayCalendarUnit|
+                  NSCalendarCalendarUnit fromDate:newDate];   
+ 
     [self setDisplayedMonth:[self month]];
 }
 
 - (void)showNextMonth {
-    NSInteger month = [[self month] month] + 1;
-    [[self month] setMonth:month];
+
+    NSCalendar *calendar = [self calendar];
+    NSDateComponents *inc = [[NSDateComponents alloc] init];
+    inc.month = 1;
+    
+    NSDate *date = [calendar dateFromComponents:self.month];
+    NSDate *newDate = [calendar dateByAddingComponents:inc toDate:date options:0];
+    
+    self.month = [calendar components:NSYearCalendarUnit|
+                  NSMonthCalendarUnit|
+                  NSDayCalendarUnit|
+                  NSWeekdayCalendarUnit|
+                  NSCalendarCalendarUnit fromDate:newDate];
     
     [self setDisplayedMonth:[self month]];
 }
