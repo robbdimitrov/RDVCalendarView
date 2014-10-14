@@ -425,24 +425,12 @@
     
     if (![oldDate isEqualToDate:selectedDate]) {
         NSCalendar *calendar = [self calendar];
-        
-        if (![self selectedDay]) {
-            [self setSelectedDay:[[NSDateComponents alloc] init]];
-        }
-        
-        NSDateComponents *selectedDateComponents = [calendar components:NSYearCalendarUnit|
-                                                                        NSMonthCalendarUnit|
-                                                                        NSDayCalendarUnit
-                                                               fromDate:selectedDate];
-        
-        if (![self selectedDay]) {
-            [self setSelectedDay:[[NSDateComponents alloc] init]];
-        }
-        
-        [[self selectedDay] setMonth:[selectedDateComponents month]];
-        [[self selectedDay] setYear:[selectedDateComponents year]];
-        [[self selectedDay] setDay:[selectedDateComponents day]];
-        
+       
+        _selectedDay = [calendar components:NSYearCalendarUnit|
+                                           NSMonthCalendarUnit|
+                                              NSDayCalendarUnit
+                                   fromDate:selectedDate];
+ 
         self.month = [calendar components:NSYearCalendarUnit|
                                           NSMonthCalendarUnit|
                                           NSDayCalendarUnit|
