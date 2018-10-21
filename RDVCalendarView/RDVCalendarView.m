@@ -102,15 +102,18 @@
         
         NSCalendar *calendar = [self calendar];
         
-        _currentDay = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit fromDate:[NSDate date]];
+        _currentDay = [calendar components:(NSCalendarUnitDay
+                                            |NSCalendarUnitMonth
+                                            |NSCalendarUnitYear)
+                                  fromDate:[NSDate date]];
         
         NSDate *currentDate = [NSDate date];
         
-        _month = [calendar components:NSYearCalendarUnit|
-                                      NSMonthCalendarUnit|
-                                      NSDayCalendarUnit|
-                                      NSWeekdayCalendarUnit|
-                                      NSCalendarCalendarUnit
+        _month = [calendar components:(NSCalendarUnitYear|
+                                      NSCalendarUnitMonth|
+                                      NSCalendarUnitDay|
+                                      NSCalendarUnitWeekday|
+                                      NSCalendarUnitCalendar)
                              fromDate:currentDate];
         _month.day = 1;
         
@@ -426,16 +429,16 @@
     if (![oldDate isEqualToDate:selectedDate]) {
         NSCalendar *calendar = [self calendar];
        
-        _selectedDay = [calendar components:NSYearCalendarUnit|
-                                           NSMonthCalendarUnit|
-                                              NSDayCalendarUnit
+        _selectedDay = [calendar components:(NSCalendarUnitYear
+                                             |NSCalendarUnitMonth
+                                             |NSCalendarUnitDay)
                                    fromDate:selectedDate];
  
-        self.month = [calendar components:NSYearCalendarUnit|
-                                          NSMonthCalendarUnit|
-                                          NSDayCalendarUnit|
-                                          NSWeekdayCalendarUnit|
-                                          NSCalendarCalendarUnit
+        self.month = [calendar components:(NSCalendarUnitYear
+                                           |NSCalendarUnitMonth
+                                           |NSCalendarUnitDay
+                                           |NSCalendarUnitWeekday
+                                           |NSCalendarUnitCalendar)
                                  fromDate:selectedDate];
         self.month.day = 1;
         [self updateMonthLabelMonth:self.month];
@@ -473,7 +476,7 @@
     
     if (![[self visibleCells] containsObject:dayCell]) {
         [dayCell prepareForReuse];
-        [dayCell.textLabel setText:[NSString stringWithFormat:@"%d", index + 1]];
+        [dayCell.textLabel setText:[NSString stringWithFormat:@"%ld", index + 1]];
         
         if (index + 1 == [self currentDay].day &&
             [self month].month == [self currentDay].month &&
@@ -577,20 +580,20 @@
 #pragma mark - Helper methods
 
 - (NSInteger)numberOfWeeks {
-    return [[self calendar] rangeOfUnit:NSDayCalendarUnit
-                                 inUnit:NSWeekCalendarUnit
+    return [[self calendar] rangeOfUnit:NSCalendarUnitDay
+                                 inUnit:NSCalendarUnitWeekOfMonth
                                 forDate:[self firstDay]].length;
 }
 
 - (NSInteger)numberOfDays {
-    return [[self calendar] rangeOfUnit:NSDayCalendarUnit
-                                 inUnit:NSMonthCalendarUnit
+    return [[self calendar] rangeOfUnit:NSCalendarUnitDay
+                                 inUnit:NSCalendarUnitMonth
                                 forDate:[self firstDay]].length;
 }
 
 - (NSInteger)numberOfDaysInFirstWeek {
-    return [[self calendar] rangeOfUnit:NSDayCalendarUnit
-                                 inUnit:NSWeekCalendarUnit
+    return [[self calendar] rangeOfUnit:NSCalendarUnitDay
+                                 inUnit:NSCalendarUnitWeekOfMonth
                                 forDate:[self firstDay]].length;
 }
 
@@ -632,17 +635,17 @@
     NSDate *date = [calendar dateFromComponents:self.month];
     NSDate *newDate = [calendar dateByAddingComponents:inc toDate:date options:0];
     
-    self.month = [calendar components:NSYearCalendarUnit|
-                  NSMonthCalendarUnit|
-                  NSDayCalendarUnit|
-                  NSWeekdayCalendarUnit|
-                  NSCalendarCalendarUnit fromDate:newDate];   
+    self.month = [calendar components:(NSCalendarUnitYear
+                                       |NSCalendarUnitMonth
+                                       |NSCalendarUnitDay
+                                       |NSCalendarUnitWeekday
+                                       |NSCalendarUnitCalendar)
+                             fromDate:newDate];
  
     [self setDisplayedMonth:[self month]];
 }
 
 - (void)showNextMonth {
-
     NSCalendar *calendar = [self calendar];
     NSDateComponents *inc = [[NSDateComponents alloc] init];
     inc.month = 1;
@@ -650,11 +653,12 @@
     NSDate *date = [calendar dateFromComponents:self.month];
     NSDate *newDate = [calendar dateByAddingComponents:inc toDate:date options:0];
     
-    self.month = [calendar components:NSYearCalendarUnit|
-                  NSMonthCalendarUnit|
-                  NSDayCalendarUnit|
-                  NSWeekdayCalendarUnit|
-                  NSCalendarCalendarUnit fromDate:newDate];
+    self.month = [calendar components:(NSCalendarUnitYear
+                                       |NSCalendarUnitMonth
+                                       |NSCalendarUnitDay
+                                       |NSCalendarUnitWeekday
+                                       |NSCalendarUnitCalendar)
+                             fromDate:newDate];
     
     [self setDisplayedMonth:[self month]];
 }

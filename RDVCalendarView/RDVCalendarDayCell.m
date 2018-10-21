@@ -95,7 +95,7 @@
     if ([self selectionStyle] != RDVCalendarDayCellSelectionStyleNone) {
         __weak RDVCalendarDayCell *weakSelf = self;
         
-        void (^block)() = ^{
+        void (^block)(void) = ^{
             if (selected) {
                 [[weakSelf backgroundView] setAlpha:0.0f];
                 [[weakSelf selectedBackgroundView] setAlpha:1.0f];
@@ -137,7 +137,7 @@
     if ([self selectionStyle] != RDVCalendarDayCellSelectionStyleNone) {
         __weak RDVCalendarDayCell *weakSelf = self;
         
-        void (^block)() = ^{
+        void (^block)(void) = ^{
             if (highlighted) {
                 [[weakSelf backgroundView] setAlpha:0.0f];
                 [[weakSelf selectedBackgroundView] setAlpha:1.0f];
