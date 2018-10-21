@@ -476,7 +476,7 @@
     
     if (![[self visibleCells] containsObject:dayCell]) {
         [dayCell prepareForReuse];
-        [dayCell.textLabel setText:[NSString stringWithFormat:@"%ld", index + 1]];
+        [dayCell.textLabel setText:[NSString stringWithFormat:@"%d", (int)index + 1]];
         
         if (index + 1 == [self currentDay].day &&
             [self month].month == [self currentDay].month &&
